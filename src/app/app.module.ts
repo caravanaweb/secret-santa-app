@@ -2,10 +2,12 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { SecretSantaApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+import { LoginPage } from '../pages/login/login';
 
 let pages = [
   SecretSantaApp,
-  HomePage
+  HomePage,
+  LoginPage
 ];
 
 export function declarations() {

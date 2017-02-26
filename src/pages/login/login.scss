@@ -1,0 +1,50 @@
+page-login {
+  .content-ios,
+  .content-md {
+    background: color($colors, primary) url("../assets/logo.png") no-repeat center 50%;
+    background-size: 80%;
+  }
+
+  .toolbar-ios,
+  .toolbar-md {
+    padding-left: 16px;
+    padding-right: 16px;
+
+    .toolbar-background {
+      background-color: color($colors, light);
+    }
+  }
+
+  .button-block {
+    left: 16px;
+    position: absolute;
+    top: calc(100% - 70px);
+    width: calc(100% - 32px);
+  }
+
+  .spinner-ios {
+    height: 22px;
+    width: 22px;
+    margin-right: 2px;
+
+    * {
+      height: 22px;
+      width: 22px;
+    }
+  }
+
+  .button-small-ios {
+    width: 2.48em;
+
+    .spinner-ios {
+      height: 16px;
+      padding: 0 .5em;
+      width: 16px;
+
+      * {
+        height: 16px;
+        width: 16px;
+      }
+    }
+  }
+}

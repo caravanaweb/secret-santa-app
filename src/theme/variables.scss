@@ -11,9 +11,9 @@ $font-path: "../assets/fonts";
 // the Sass variables found in Ionic's source scss files.
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
-
-
-
+$toolbar-background: #CC434F;
+$toolbar-border-color: transparent;
+$searchbar-ios-background-color: $toolbar-background;
 
 // Named Color Variables
 // --------------------------------------------------
@@ -24,11 +24,16 @@ $font-path: "../assets/fonts";
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #387ef5,
-  secondary:  #32db64,
-  danger:     #f53d3d,
-  light:      #f4f4f4,
-  dark:       #222
+  primary:    #CC434F,
+  secondary:  #607D8B,
+  danger:     #F44336,
+  light:      #FFCDD2,
+  dark:       #D32F2F,
+  facebook:   #3b5998,
+  twitter:    #1da1f2,
+  google:     #4285f4,
+  offline:    #bdbdbd,
+  toolbar_input_color: #fff
 );
 
 

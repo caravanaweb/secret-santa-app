@@ -14,3 +14,65 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+a[disabled],
+button[disabled],
+[ion-button][disabled] {
+  opacity: .9;
+}
+
+.no-scroll {
+  .scroll-content {
+    overflow: hidden;
+  }
+}
+
+.ss-messages {
+  ion-avatar {
+    align-self: flex-start;
+  }
+}
+
+.ss-alert {
+  ion-icon {
+    left: 10px;
+    position: relative;
+  }
+}
+
+.align-top,
+.btn-popover {
+  display: flex;
+  align-self: flex-start;
+}
+
+ion-toolbar {
+  ion-input {
+    .text-input {
+      color: white;
+      &::placeholder {
+        color: color($colors, toolbar_input_color);
+      }
+    }
+  }
+
+  .item-block {
+    background: transparent;
+    padding-left: 8px;
+  }
+}
+
+ion-list {
+  ion-avatar {
+    img {
+      margin-top: 5px;
+    }
+  }
+}
+
+.offline {
+  .header {
+    .toolbar-background {
+      background-color: color($colors, offline);
+    }
+  }
+}

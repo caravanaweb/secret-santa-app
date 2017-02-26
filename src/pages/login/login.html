@@ -1,0 +1,6 @@
+<ion-content padding class="no-scroll">
+  <button ion-button block icon-left color="facebook" (click)="connectWithFacebook()" [disabled]="isLoading">
+    <ion-icon name="logo-facebook" [hidden]="isLoading"></ion-icon>
+    <ion-spinner *ngIf="isLoading" color="light"></ion-spinner> Connect with Facebook
+  </button>
+</ion-content>
