@@ -1,21 +1,34 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { MyApp } from './app.component';
+import { SecretSantaApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 
+let pages = [
+  SecretSantaApp,
+  HomePage
+];
+
+export function declarations() {
+  return pages;
+}
+
+export function entryComponents() {
+  return pages;
+}
+
+export function providers() {
+  return [
+    { provide: ErrorHandler, useClass: IonicErrorHandler }
+  ];
+}
+
 @NgModule({
-  declarations: [
-    MyApp,
-    HomePage
-  ],
+  declarations: declarations(),
   imports: [
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(SecretSantaApp)
   ],
   bootstrap: [IonicApp],
-  entryComponents: [
-    MyApp,
-    HomePage
-  ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  entryComponents: entryComponents(),
+  providers: providers()
 })
 export class AppModule {}
