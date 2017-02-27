@@ -5,6 +5,7 @@ import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 
 import { AngularFireModule } from 'angularfire2';
+import { AuthService } from '../providers/auth-service';
 
 export const firebaseConfig = {
   // Inclua as informações que você copiou do console do Firebase no passo anterior.
@@ -26,6 +27,7 @@ export function entryComponents() {
 
 export function providers() {
   return [
+    AuthService,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ];
 }
