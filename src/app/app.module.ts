@@ -4,6 +4,12 @@ import { SecretSantaApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 
+import { AngularFireModule } from 'angularfire2';
+
+export const firebaseConfig = {
+  // Inclua as informações que você copiou do console do Firebase no passo anterior.
+};
+
 let pages = [
   SecretSantaApp,
   HomePage,
@@ -27,7 +33,8 @@ export function providers() {
 @NgModule({
   declarations: declarations(),
   imports: [
-    IonicModule.forRoot(SecretSantaApp)
+    IonicModule.forRoot(SecretSantaApp),
+    AngularFireModule.initializeApp(firebaseConfig)
   ],
   bootstrap: [IonicApp],
   entryComponents: entryComponents(),
