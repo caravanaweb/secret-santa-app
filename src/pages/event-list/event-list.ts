@@ -1,22 +1,19 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { EventCreatePage } from '../event-create/event-create';
 
-/*
-  Generated class for the EventList page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
   selector: 'page-event-list',
   templateUrl: 'event-list.html'
 })
 export class EventListPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {}
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams
+  ) {}
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad EventListPage');
+  pushToEventCreate() {
+    this.navCtrl.push(EventCreatePage);
   }
-
 }

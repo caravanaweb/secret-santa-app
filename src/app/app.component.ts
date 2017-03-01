@@ -3,6 +3,7 @@ import { Events, Nav, Platform } from 'ionic-angular';
 import { Keyboard } from '@ionic-native/keyboard';
 import { StatusBar } from '@ionic-native/statusbar';
 import { Splashscreen } from '@ionic-native/splashscreen'
+import { AuthService } from '../providers/auth-service';
 
 import { EventListPage } from '../pages/event-list/event-list';
 import { LoginPage } from '../pages/login/login';
@@ -12,14 +13,16 @@ import { LoginPage } from '../pages/login/login';
 })
 export class SecretSantaApp {
   @ViewChild(Nav) nav: Nav;
-  rootPage = LoginPage;
+  rootPage: Component;
 
   constructor(
+    public _auth: AuthService,
     public events: Events,
     public platform: Platform
   ) {
     this.initializeApp();
     this.listenToAuthEvents();
+    this.isUserLoggedIn();
   }
 
   initializeApp() {
@@ -28,6 +31,14 @@ export class SecretSantaApp {
       Splashscreen.hide();
       Keyboard.hideKeyboardAccessoryBar(false);
     });
+  }
+
+  isUserLoggedIn() {
+    if (this._auth.authenticated) {
+      this.rootPage = EventListPage
+    } else {
+      this.rootPage = LoginPage;
+    }
   }
 
   listenToAuthEvents() {

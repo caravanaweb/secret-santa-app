@@ -1,3 +1,18 @@
 page-event-list {
+  .card {
+    box-shadow: none;
 
+    strong {
+      display: block;
+      padding-top: 10px;
+    }
+
+    .icon {
+      font-size: 50px;
+    }
+
+    .card-content {
+      padding-bottom: 30px;
+    }
+  }
 }

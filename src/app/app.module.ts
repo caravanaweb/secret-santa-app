@@ -4,6 +4,7 @@ import { SecretSantaApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { EventListPage } from '../pages/event-list/event-list';
+import { EventCreatePage } from '../pages/event-create/event-create';
 
 import { AngularFireModule } from 'angularfire2';
 import { AuthService } from '../providers/auth-service';
@@ -16,6 +17,7 @@ let pages = [
   SecretSantaApp,
   HomePage,
   LoginPage,
+  EventCreatePage,
   EventListPage
 ];
 

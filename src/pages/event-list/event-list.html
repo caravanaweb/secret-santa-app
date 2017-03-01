@@ -1,18 +1,20 @@
-<!--
-  Generated template for the EventList page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
   <ion-navbar>
-    <ion-title>event-list</ion-title>
+    <ion-title>Minhas Comemorações</ion-title>
   </ion-navbar>
-
 </ion-header>
 
+<ion-content>
+  <ion-card text-center>
+    <ion-card-header><ion-icon name="star" color="primary"></ion-icon><strong>Você ainda não possui um Amigo Secreto</strong></ion-card-header>
+    <ion-card-content>
+      A diversão só começa quando você cria um <b>Amigo Secreto</b> e convida amigos e familiares para celebrar.
+    </ion-card-content>
+  </ion-card>
 
-<ion-content padding>
-
+  <ion-fab right bottom>
+    <button ion-fab (click)="pushToEventCreate()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
 </ion-content>
