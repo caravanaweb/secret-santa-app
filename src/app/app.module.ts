@@ -3,18 +3,20 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { SecretSantaApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
+import { EventListPage } from '../pages/event-list/event-list';
 
 import { AngularFireModule } from 'angularfire2';
 import { AuthService } from '../providers/auth-service';
 
 export const firebaseConfig = {
-  // Inclua as informações que você copiou do console do Firebase no passo anterior.
+  // Inclua as informações que você copiou do console do Firebase.
 };
 
 let pages = [
   SecretSantaApp,
   HomePage,
-  LoginPage
+  LoginPage,
+  EventListPage
 ];
 
 export function declarations() {
