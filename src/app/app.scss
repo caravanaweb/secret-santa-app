@@ -20,6 +20,29 @@ button[disabled],
   opacity: .9;
 }
 
+form {
+  .item {
+    .label[stacked] {
+      .icon {
+        position: relative;
+        top: 1px;
+
+        &[name=calendar] {
+          top: 0;
+        }
+      }
+    }
+    + p {
+      background: color($colors, danger);
+      color: white;
+      margin: 0;
+      padding: 1em 0 1em 16px;
+      position: relative;
+      top: -3px;
+    }
+  }
+}
+
 .no-scroll {
   .scroll-content {
     overflow: hidden;

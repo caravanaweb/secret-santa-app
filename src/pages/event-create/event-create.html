@@ -5,39 +5,53 @@
 </ion-header>
 
 <ion-content>
-  <form #eventForm="ngForm" novalidate>
+  <form #eventForm="ngForm" novalidate action="#">
     <ion-list>
       <ion-item>
-        <ion-label stacked>Título</ion-label>
+        <ion-label stacked><ion-icon name="happy"></ion-icon> Título</ion-label>
         <ion-input [(ngModel)]="event.title" name="title" type="text" #title="ngModel" required></ion-input>
       </ion-item>
+      <p [hidden]="title.valid || submitted == false">Você precisa inserir um título para seu Amigo Secreto</p>
 
       <ion-item>
-        <ion-label stacked>Imagem</ion-label>
+        <ion-label stacked><ion-icon name="image"></ion-icon> Imagem</ion-label>
         <ion-input [(ngModel)]="event.picture" name="picture" type="text" #picture="ngModel" required></ion-input>
       </ion-item>
+      <p [hidden]="picture.valid || submitted == false">Uma imagem vale mais que mil palavras não é mesmo?</p>
 
       <ion-item>
-        <ion-label stacked>Endereço</ion-label>
+        <ion-label stacked><ion-icon name="compass"></ion-icon> Endereço</ion-label>
         <ion-input [(ngModel)]="event.location" name="location" type="text" #location="ngModel" required></ion-input>
       </ion-item>
+      <p [hidden]="location.valid || submitted == false">Sem um endereço como seus convidados chegarão para a comemoração?
+      </p>
 
       <ion-item>
-        <ion-label stacked>Data do Sorteio</ion-label>
-        <ion-datetime cancelText="Cancelar" doneText="Confirmar" [(ngModel)]="event.raffleDate" name="raffleDate"
+        <ion-label stacked><ion-icon name="alarm"></ion-icon> Data do Sorteio</ion-label>
+        <ion-datetime [(ngModel)]="event.raffleDate" name="raffleDate"
+        cancelText="Cancelar"
+        doneText="Confirmar"
         monthShortNames="Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez"
-        displayFormat="DD/MMM/YYYY" [min]="minDate" (ionChange)="onRaffleDateAccept($event)"></ion-datetime>
+        displayFormat="DD/MMM/YYYY"
+        [min]="minDate"
+        (ionChange)="onRaffleDateAccept($event)">
+        </ion-datetime>
       </ion-item>
 
       <ion-item>
-        <ion-label stacked>Data</ion-label>
-        <ion-datetime cancelText="Cancelar" doneText="Confirmar" [(ngModel)]="event.eventDate" name="eventDate" #eventDate="ngModel"
-        monthShortNames="Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez" displayFormat="DD/MMM/YYYY" [min]="minEventDate" required></ion-datetime>
+        <ion-label stacked><ion-icon name="calendar"></ion-icon> Data</ion-label>
+        <ion-datetime [(ngModel)]="event.eventDate" name="eventDate" #eventDate="ngModel"
+        cancelText="Cancelar"
+        doneText="Confirmar"
+        monthShortNames="Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez" displayFormat="DD/MMM/YYYY"
+        [min]="minEventDate" required>
+        </ion-datetime>
       </ion-item>
+      <p [hidden]="eventDate.valid || submitted == false">Escolha uma data para seu Amigo Secreto</p>
 
       <ion-item>
-        <ion-label stacked>Horário de início</ion-label>
-        <ion-datetime cancelText="Cancelar" doneText="Confirmar" [(ngModel)]="event.eventTime" name="eventTime" #eventTime="ngModel" displayFormat="HH:mm" pickerFormat="HH mm" minuteValues="0,30" required></ion-datetime>
+        <ion-label stacked><ion-icon name="clock"></ion-icon> Horário de início</ion-label>
+        <ion-datetime cancelText="Cancelar" doneText="Confirmar" [(ngModel)]="event.eventTime" name="eventTime" #eventTime="ngModel" displayFormat="HH:mm" pickerFormat="HH mm" minuteValues="0,30"></ion-datetime>
       </ion-item>
     </ion-list>
 

@@ -15,6 +15,7 @@ export class EventCreatePage {
   minDate: string;
   minEventDate: string;
   today: Date;
+  submitted: boolean = false;
 
   constructor(
     af: AngularFire,
@@ -33,8 +34,12 @@ export class EventCreatePage {
   }
 
   onEventCreate(form) {
-    this.events.push(this.event).then(res => {
-      this.navCtrl.push(EventListPage);
-    });
+    this.submitted = true;
+
+    if (form.valid) {
+      this.events.push(this.event).then(res => {
+        this.navCtrl.push(EventListPage);
+      });
+    }
   }
 }
