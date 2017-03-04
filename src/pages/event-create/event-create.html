@@ -24,17 +24,20 @@
 
       <ion-item>
         <ion-label stacked>Data do Sorteio</ion-label>
-        <ion-input [(ngModel)]="event.raffleDate" name="raffleDate" type="text" #raffleDate="ngModel"></ion-input>
+        <ion-datetime cancelText="Cancelar" doneText="Confirmar" [(ngModel)]="event.raffleDate" name="raffleDate"
+        monthShortNames="Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez"
+        displayFormat="DD/MMM/YYYY" [min]="minDate" (ionChange)="onRaffleDateAccept($event)"></ion-datetime>
       </ion-item>
 
       <ion-item>
         <ion-label stacked>Data</ion-label>
-        <ion-input [(ngModel)]="event.eventDate" name="eventDate" type="text" #eventDate="ngModel" required></ion-input>
+        <ion-datetime cancelText="Cancelar" doneText="Confirmar" [(ngModel)]="event.eventDate" name="eventDate" #eventDate="ngModel"
+        monthShortNames="Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez" displayFormat="DD/MMM/YYYY" [min]="minEventDate" required></ion-datetime>
       </ion-item>
 
       <ion-item>
         <ion-label stacked>Horário de início</ion-label>
-        <ion-input [(ngModel)]="event.eventTime" name="eventTime" type="text" #eventTime="ngModel" required></ion-input>
+        <ion-datetime cancelText="Cancelar" doneText="Confirmar" [(ngModel)]="event.eventTime" name="eventTime" #eventTime="ngModel" displayFormat="HH:mm" pickerFormat="HH mm" minuteValues="0,30" required></ion-datetime>
       </ion-item>
     </ion-list>
 

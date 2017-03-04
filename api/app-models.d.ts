@@ -4,7 +4,7 @@ declare module 'api/models/app-models' {
     title?: string;
     picture?: string;
     friends?: number;
-    raffleDate?: Date;
+    raffleDate?: string;
     eventDate?: string;
     location?: string;
     ownership?: string;
