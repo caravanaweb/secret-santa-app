@@ -3,6 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { Event } from "api/models/app-models";
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
+import { UserData } from '../../providers/user-data';
 import { EventListPage } from '../../pages/event-list/event-list';
 
 @Component({
@@ -16,16 +17,24 @@ export class EventCreatePage {
   minEventDate: string;
   today: Date;
   submitted: boolean = false;
+  uid: string;
 
   constructor(
     af: AngularFire,
     public navCtrl: NavController,
-    public navParams: NavParams
+    public navParams: NavParams,
+    public userData: UserData
   ) {
     this.today = new Date();
     this.minDate = this.today.toISOString().substring(0,10);
     this.event.raffleDate = this.minDate;
     this.events = af.database.list('/events');
+  }
+
+  ngAfterViewInit() {
+    this.userData.getProfileId().then(uid => {
+      this.uid = uid;
+    });
   }
 
   onRaffleDateAccept(event) {
@@ -35,9 +44,13 @@ export class EventCreatePage {
 
   onEventCreate(form) {
     this.submitted = true;
+    let eventData: Event;
 
     if (form.valid) {
-      this.events.push(this.event).then(res => {
+      eventData = this.event;
+      eventData.ownership = this.uid;
+
+      this.events.push(eventData).then(res => {
         this.navCtrl.push(EventListPage);
       });
     }

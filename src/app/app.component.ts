@@ -4,6 +4,8 @@ import { Keyboard } from '@ionic-native/keyboard';
 import { StatusBar } from '@ionic-native/statusbar';
 import { Splashscreen } from '@ionic-native/splashscreen'
 import { AuthService } from '../providers/auth-service';
+import { AngularFire } from 'angularfire2';
+import { UserData } from '../providers/user-data';
 
 import { EventListPage } from '../pages/event-list/event-list';
 import { LoginPage } from '../pages/login/login';
@@ -16,9 +18,10 @@ export class SecretSantaApp {
   rootPage: Component;
 
   constructor(
-    public _auth: AuthService,
+    public af: AngularFire,
     public events: Events,
-    public platform: Platform
+    public platform: Platform,
+    public userData: UserData
   ) {
     this.initializeApp();
     this.listenToAuthEvents();
@@ -34,11 +37,14 @@ export class SecretSantaApp {
   }
 
   isUserLoggedIn() {
-    if (this._auth.authenticated) {
-      this.rootPage = EventListPage
-    } else {
-      this.rootPage = LoginPage;
-    }
+    this.af.auth.subscribe(auth$ => {
+      if (auth$) {
+        this.userData.setProfileId(auth$.uid);
+        this.rootPage = EventListPage;
+      } else {
+        this.rootPage = LoginPage;
+      }
+    });
   }
 
   listenToAuthEvents() {

@@ -10,4 +10,15 @@ declare module 'api/models/app-models' {
     ownership?: string;
     isFriendsChosen?: boolean;
   }
+
+  interface User {
+    uid?: string;
+    name?: string;
+    username?: string;
+    email?: string;
+    picture?: string;
+    gift?: string;
+    phone?: string;
+    birthday?: Date;
+  }
 }
