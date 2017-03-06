@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-card text-center>
+  <ion-card text-center *ngIf="eventsCount === 0">
     <ion-card-header>
       <ion-icon name="star" color="primary"></ion-icon>
       <strong>Você ainda não possui um Amigo Secreto</strong>
@@ -14,6 +14,18 @@
       A diversão só começa quando você cria um <b>Amigo Secreto</b> e convida amigos e familiares para celebrar.
     </ion-card-content>
   </ion-card>
+
+  <ion-list class="event-list">
+    <button ion-item *ngFor="let event of events | async" (click)="goToEventPage(event)">
+      <ion-thumbnail item-left>
+        <img class="event-picture" [src]="event.picture">
+      </ion-thumbnail>
+      <h2 class="event-title">{{event.title}}</h2>
+      <p class="event-location">{{event.location}}</p>
+      <p class="event-date">{{event.eventDate}}</p>
+    </button>
+  </ion-list>
+
   <ion-fab right bottom>
     <button ion-fab (click)="pushToEventCreate()">
       <ion-icon name="add"></ion-icon>
