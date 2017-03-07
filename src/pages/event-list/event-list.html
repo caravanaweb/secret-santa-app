@@ -22,7 +22,7 @@
       </ion-thumbnail>
       <h2 class="event-title">{{event.title}}</h2>
       <p class="event-location">{{event.location}}</p>
-      <p class="event-date">{{event.eventDate}}</p>
+      <p class="event-date">{{event.eventDate | date:'dd/MM/y' }} {{event.eventTime}}</p>
     </button>
   </ion-list>
 

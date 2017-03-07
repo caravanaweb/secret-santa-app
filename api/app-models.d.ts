@@ -6,6 +6,7 @@ declare module 'api/models/app-models' {
     friends?: number;
     raffleDate?: string;
     eventDate?: string;
+    eventTime?: string;
     location?: string;
     ownership?: string;
     isFriendsChosen?: boolean;
