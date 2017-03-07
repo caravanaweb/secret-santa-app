@@ -11,8 +11,10 @@ import { EventCreatePage } from '../event-create/event-create';
   templateUrl: 'event-list.html'
 })
 export class EventListPage {
-  events: FirebaseListObservable<Event>;
+  events: FirebaseListObservable<any>;
   eventsCount: number;
+  eventList: Event[];
+  loadedEventList: Event[];
 
   constructor(
     public af: AngularFire,
@@ -20,8 +22,34 @@ export class EventListPage {
     public navParams: NavParams
   ) {
     this.events = this.af.database.list('/events');
-    this.af.database.list('/events').map(list=>list.length).subscribe(length => {
-      this.eventsCount = length;
+    this.events.subscribe(snapshots => {
+      let events = [];
+      snapshots.forEach(snapshot => {
+        events.push(snapshot);
+      });
+
+      this.loadedEventList = this.eventList = events;
+      this.eventsCount = events.length;
+    });
+  }
+
+  initializeEvents(): void {
+    this.eventList = this.loadedEventList;
+  }
+
+  getItems(ev: any) {
+    this.initializeEvents();
+    let q = ev.target.value;
+
+    if (!q) return;
+
+    this.eventList = this.eventList.filter((v) => {
+      if (v.title && q) {
+        if (v.title.toLowerCase().indexOf(q.toLowerCase()) > -1) {
+          return true;
+        }
+        return false;
+      }
     });
   }
 
