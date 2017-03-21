@@ -10,6 +10,7 @@ import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { EventListPage } from '../pages/event-list/event-list';
 import { EventCreatePage } from '../pages/event-create/event-create';
+import { EventDetailPage } from '../pages/event-detail/event-detail';
 
 export const firebaseConfig = {
   // Inclua as informações que você copiou do console do Firebase.
@@ -20,16 +21,9 @@ let pages = [
   HomePage,
   LoginPage,
   EventCreatePage,
-  EventListPage
+  EventListPage,
+  EventDetailPage
 ];
-
-export function declarations() {
-  return pages;
-}
-
-export function entryComponents() {
-  return pages;
-}
 
 export function providers() {
   return [
@@ -41,13 +35,13 @@ export function providers() {
 }
 
 @NgModule({
-  declarations: declarations(),
+  declarations: pages,
   imports: [
     IonicModule.forRoot(SecretSantaApp),
     AngularFireModule.initializeApp(firebaseConfig)
   ],
   bootstrap: [IonicApp],
-  entryComponents: entryComponents(),
+  entryComponents: pages,
   providers: providers()
 })
 export class AppModule {}

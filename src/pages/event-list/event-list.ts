@@ -5,6 +5,7 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 import 'rxjs/add/operator/map'
 
 import { EventCreatePage } from '../event-create/event-create';
+import { EventDetailPage } from '../event-detail/event-detail';
 
 @Component({
   selector: 'page-event-list',
@@ -50,6 +51,13 @@ export class EventListPage {
         }
         return false;
       }
+    });
+  }
+
+  goToEventPage(event) {
+    this.navCtrl.push(EventDetailPage, {
+      'eventId': event.$key,
+      'event': event
     });
   }
 
