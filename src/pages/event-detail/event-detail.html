@@ -11,6 +11,11 @@
       <ion-icon name="pin" item-left large></ion-icon>
       <h2>{{selectedEvent.location}}</h2>
       <p>{{selectedEvent.eventDate | date:'dd/MM/y'}} {{selectedEvent.eventTime}}</p>
+
+      <button ion-button icon-left clear item-right (click)="getDirections()">
+        <ion-icon name="navigate"></ion-icon>
+        Direções
+      </button>
     </ion-item>
   </ion-card>
 </ion-content>

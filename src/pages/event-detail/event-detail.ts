@@ -15,4 +15,8 @@ export class EventDetailPage {
   ) {
     this.selectedEvent = <Event>navParams.get('event');
   }
+
+  getDirections() {
+    window.open(`https://maps.google.com/?q=${this.selectedEvent.location}`, '_system');
+  }
 }
