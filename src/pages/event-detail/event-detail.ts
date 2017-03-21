@@ -8,12 +8,15 @@ import { Event } from 'api/models/app-models';
 })
 export class EventDetailPage {
   selectedEvent: Event;
+  staticMapImage: string;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams
   ) {
     this.selectedEvent = <Event>navParams.get('event');
+
+    this.staticMapImage = `https://maps.googleapis.com/maps/api/staticmap?center=${this.selectedEvent.location}&zoom=17&size=640x640&key=AIzaSyAbeCFDXgQbjDU2-usm3rQNF1F3U6zj7Iw`;
   }
 
   getDirections() {

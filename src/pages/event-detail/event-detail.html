@@ -6,9 +6,11 @@
 
 <ion-content>
   <ion-card>
-    <img class="event-picture" [src]="selectedEvent.picture">
+    <img class="event-picture" [src]="staticMapImage">
     <ion-item>
-      <ion-icon name="pin" item-left large></ion-icon>
+      <ion-avatar item-left>
+        <img class="event-picture" [src]="selectedEvent.picture">
+      </ion-avatar>
       <h2>{{selectedEvent.location}}</h2>
       <p>{{selectedEvent.eventDate | date:'dd/MM/y'}} {{selectedEvent.eventTime}}</p>
 

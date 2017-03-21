@@ -14,4 +14,10 @@ page-event-detail {
       }
     }
   }
+
+  .card {
+    > .event-picture {
+      min-height: 392px;
+    }
+  }
 }
