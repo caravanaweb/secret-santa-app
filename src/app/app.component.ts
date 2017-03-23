@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { Events, Nav, Platform } from 'ionic-angular';
 import { Keyboard } from '@ionic-native/keyboard';
-import { StatusBar } from '@ionic-native/statusbar';
-import { Splashscreen } from '@ionic-native/splashscreen'
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
 import { AuthService } from '../providers/auth-service';
 import { AngularFire } from 'angularfire2';
 import { UserData } from '../providers/user-data';
@@ -20,7 +20,10 @@ export class SecretSantaApp {
   constructor(
     public af: AngularFire,
     public events: Events,
+    private keyboard: Keyboard,
     public platform: Platform,
+    public splashScreen: SplashScreen,
+    public statusBar: StatusBar,
     public userData: UserData
   ) {
     this.initializeApp();
@@ -30,9 +33,9 @@ export class SecretSantaApp {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      StatusBar.styleLightContent();
-      Splashscreen.hide();
-      Keyboard.hideKeyboardAccessoryBar(false);
+      this.statusBar.styleLightContent();
+      this.splashScreen.hide();
+      this.keyboard.hideKeyboardAccessoryBar(false);
     });
   }
 
