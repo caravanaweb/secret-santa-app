@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Events, NavController, NavParams } from 'ionic-angular';
 import { EventListPage } from '../event-list/event-list';
 import { Event } from 'api/models/app-models';
 import { AngularFire, FirebaseObjectObservable } from 'angularfire2';
@@ -17,6 +17,7 @@ export class EventSettingsPage {
 
   constructor(
     af: AngularFire,
+    public events: Events,
     public navCtrl: NavController,
     public navParams: NavParams
   ) {
@@ -34,6 +35,7 @@ export class EventSettingsPage {
       eventData = form.value;
 
       this.eventFirebaseObject.update(eventData).then(_ => {
+        this.events.publish('message:show', message, 'success');
         this.navCtrl.pop();
       });
     }
@@ -43,6 +45,7 @@ export class EventSettingsPage {
     let message = `O Amigo Secreto "${this.event.title}" foi removido com sucesso.`;
 
     this.eventFirebaseObject.remove().then(_ => {
+      this.events.publish('message:show', message, 'success');
       this.navCtrl.push(EventListPage);
     });
   }

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Events, Nav, Platform } from 'ionic-angular';
+import { Events, Nav, Platform, ToastController } from 'ionic-angular';
 import { Keyboard } from '@ionic-native/keyboard';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -23,11 +23,12 @@ export class SecretSantaApp {
     private keyboard: Keyboard,
     public platform: Platform,
     public splashScreen: SplashScreen,
+    private toastCtrl: ToastController,
     public statusBar: StatusBar,
     public userData: UserData
   ) {
     this.initializeApp();
-    this.listenToAuthEvents();
+    this.listenToEvents();
     this.isUserLoggedIn();
   }
 
@@ -50,9 +51,20 @@ export class SecretSantaApp {
     });
   }
 
-  listenToAuthEvents() {
+  listenToEvents() {
     this.events.subscribe('user:login', () => {
       this.nav.setRoot(EventListPage);
     });
+
+    this.events.subscribe('message:show', (messageStr, styleClass) => {
+      let toast = this.toastCtrl.create({
+        message: messageStr,
+        cssClass: styleClass,
+        duration: 4000,
+        position: 'bottom'
+      });
+
+      toast.present();
+    })
   }
 }
