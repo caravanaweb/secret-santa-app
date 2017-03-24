@@ -1,6 +1,6 @@
 declare module 'api/models/app-models' {
   interface Event {
-    id?: string;
+    $key?: string;
     title?: string;
     picture?: string;
     friends?: number;

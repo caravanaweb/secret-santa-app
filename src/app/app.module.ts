@@ -14,13 +14,10 @@ import { LoginPage } from '../pages/login/login';
 import { EventListPage } from '../pages/event-list/event-list';
 import { EventCreatePage } from '../pages/event-create/event-create';
 import { EventDetailPage } from '../pages/event-detail/event-detail';
+import { EventSettingsPage } from '../pages/event-settings/event-settings';
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyCpGM7VQ6g6WuGvpukqQlIkd9Q12sD2kPU",
-  authDomain: "secret-santa-1481683764948.firebaseapp.com",
-  databaseURL: "https://secret-santa-1481683764948.firebaseio.com",
-  storageBucket: "secret-santa-1481683764948.appspot.com",
-  messagingSenderId: "56975771687"
+  // Inclua as informações que você copiou do console do Firebase.
 };
 
 let pages = [
@@ -29,7 +26,8 @@ let pages = [
   LoginPage,
   EventCreatePage,
   EventListPage,
-  EventDetailPage
+  EventDetailPage,
+  EventSettingsPage
 ];
 
 export function providers() {

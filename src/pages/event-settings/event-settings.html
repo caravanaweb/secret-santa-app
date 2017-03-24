@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Configurações</ion-title>
+    <ion-buttons end>
+      <button ion-button block icon-only (click)="removeEvent()">
+        <ion-icon name="trash"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <img [src]="event.picture" />
+  </ion-card>
+  <form #eventForm="ngForm" novalidate>
+    <ion-list no-lines>
+      <ion-item>
+        <ion-label stacked>Nome</ion-label>
+        <ion-input [(ngModel)]="event.title" name="title" type="text" #title="ngModel" required></ion-input>
+      </ion-item>
+      <p [hidden]="title.valid || submitted == false" color="danger" padding-left ion-text>O nome do Amigo Secreto é obrigatório</p>
+
+      <ion-item>
+        <ion-label stacked>Local</ion-label>
+        <ion-input [(ngModel)]="event.location" name="location" type="text" #location="ngModel" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>Data do Sorteio</ion-label>
+        <ion-datetime [(ngModel)]="event.raffleDate" name="raffleDate" #raffleDate="ngModel" displayFormat="DD/MM/YYYY" [min]="minDate"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>Data da Celebração</ion-label>
+        <ion-datetime [(ngModel)]="event.eventDate" name="eventDate" #eventDate="ngModel" displayFormat="DD/MM/YYYY" [min]="minDate"></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>A partir de que horas?</ion-label>
+        <ion-datetime [(ngModel)]="event.eventTime" name="eventTime" #eventTime="ngModel" displayFormat="h:mm A" pickerFormat="h mm A" minuteValues="0,30"></ion-datetime>
+      </ion-item>
+    </ion-list>
+
+    <div padding>
+      <button ion-button block (click)="onEventUpdate(eventForm)">Salvar alterações</button>
+    </div>
+  </form>
+</ion-content>
