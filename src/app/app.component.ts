@@ -9,6 +9,7 @@ import { UserData } from '../providers/user-data';
 
 import { EventListPage } from '../pages/event-list/event-list';
 import { LoginPage } from '../pages/login/login';
+import { AccountPage } from '../pages/account/account';
 
 @Component({
   templateUrl: 'app.html'
@@ -43,8 +44,21 @@ export class SecretSantaApp {
   isUserLoggedIn() {
     this.af.auth.subscribe(auth$ => {
       if (auth$) {
-        this.userData.setProfileId(auth$.uid);
-        this.rootPage = EventListPage;
+        const queryObservable = this.af.database.list('/users', {
+          query: {
+            orderByChild: 'uid',
+            equalTo: auth$.uid
+          }
+        });
+
+        queryObservable.subscribe(queriedItems => {
+          if (queriedItems.length > 0) {
+            this.nav.setRoot(EventListPage);
+          } else {
+            this.userData.setProfileId(auth$.uid);
+            this.nav.setRoot(AccountPage, { 'auth': auth$ });
+          }
+        });
       } else {
         this.rootPage = LoginPage;
       }
@@ -52,8 +66,7 @@ export class SecretSantaApp {
   }
 
   listenToEvents() {
-    this.events.subscribe('user:login', () => {
-      this.nav.setRoot(EventListPage);
+    this.events.subscribe('user:login', (fireData) => {
     });
 
     this.events.subscribe('message:show', (messageStr, styleClass) => {

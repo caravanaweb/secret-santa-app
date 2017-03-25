@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Criando sua conta</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-fab top right edge>
+    <span ion-fab mini>
+      <img [src]="account.picture">
+    </span>
+  </ion-fab>
+  <form #accountForm="ngForm" novalidate action="#">
+    <ion-list>
+      <ion-item>
+        <ion-label stacked><ion-icon name="happy"></ion-icon> Nome</ion-label>
+        <ion-input [(ngModel)]="account.name" name="name" type="text" #name="ngModel" required></ion-input>
+      </ion-item>
+      <p [hidden]="name.valid || submitted == false">Como saberemos seu nome 🤔</p>
+
+      <ion-item>
+        <ion-label stacked><ion-icon name="mail"></ion-icon> Email</ion-label>
+        <ion-input [(ngModel)]="account.email" name="email" type="email" #email="ngModel" required></ion-input>
+      </ion-item>
+      <p [hidden]="email.valid || submitted == false">Queremos te manter informado sobre as novidades</p>
+
+      <ion-item>
+        <ion-label stacked><ion-icon name="call"></ion-icon> Telefone (Whatsapp)</ion-label>
+        <ion-input [(ngModel)]="account.phone" name="phone" type="phone" #phone="ngModel" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked><ion-icon name="calendar"></ion-icon> Data de Aniversário</ion-label>
+        <ion-datetime [(ngModel)]="account.birthday" name="birthday"
+        cancelText="Cancelar"
+        doneText="Confirmar"
+        monthShortNames="Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez"
+        displayFormat="DD/MMM/YYYY">
+        </ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked><ion-icon name="happy"></ion-icon> Qual presente você gostaria de receber?</ion-label>
+        <ion-input [(ngModel)]="account.gift" name="gift" type="text" #gift="ngModel" required></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <div padding>
+      <button ion-button block (click)="onAccountCreate(accountForm)">Enviar &amp; criar minha conta</button>
+    </div>
+  </form>
+</ion-content>

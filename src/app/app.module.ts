@@ -11,19 +11,25 @@ import { Keyboard } from '@ionic-native/keyboard';
 
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
+import { AccountPage } from '../pages/account/account';
 import { EventListPage } from '../pages/event-list/event-list';
 import { EventCreatePage } from '../pages/event-create/event-create';
 import { EventDetailPage } from '../pages/event-detail/event-detail';
 import { EventSettingsPage } from '../pages/event-settings/event-settings';
 
 export const firebaseConfig = {
-  // Inclua as informações que você copiou do console do Firebase.
+  apiKey: "AIzaSyCpGM7VQ6g6WuGvpukqQlIkd9Q12sD2kPU",
+  authDomain: "secret-santa-1481683764948.firebaseapp.com",
+  databaseURL: "https://secret-santa-1481683764948.firebaseio.com",
+  storageBucket: "secret-santa-1481683764948.appspot.com",
+  messagingSenderId: "56975771687"
 };
 
 let pages = [
   SecretSantaApp,
   HomePage,
   LoginPage,
+  AccountPage,
   EventCreatePage,
   EventListPage,
   EventDetailPage,
