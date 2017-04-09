@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { User } from "api/models/app-models";
+import { UserData } from '../../providers/user-data';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
 import { EventListPage } from '../../pages/event-list/event-list';
@@ -17,7 +18,8 @@ export class AccountPage {
   constructor(
     af: AngularFire,
     public navCtrl: NavController,
-    public navParams: NavParams
+    public navParams: NavParams,
+    public userData: UserData
   ) {
     let fireData = navParams.get('auth');
     this.account = {
@@ -36,10 +38,10 @@ export class AccountPage {
 
     if (form.valid) {
       accountData = this.account;
-
-      this.users.push(accountData).then(res => {
-        this.navCtrl.push(EventListPage);
-      });
+      let userKey: string = this.users.push(accountData).key;
+      accountData.$key = userKey;
+      this.userData.setProfile(accountData);
+      this.navCtrl.push(EventListPage);
     }
   }
 

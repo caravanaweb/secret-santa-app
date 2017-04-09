@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-import { Event } from "api/models/app-models";
+import { Events, NavController, NavParams } from 'ionic-angular';
+import { Event, User } from "api/models/app-models";
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 import 'rxjs/add/operator/map'
 
 import { EventCreatePage } from '../event-create/event-create';
 import { EventDetailPage } from '../event-detail/event-detail';
+import { UserData } from '../../providers/user-data';
 
 @Component({
   selector: 'page-event-list',
@@ -16,12 +17,18 @@ export class EventListPage {
   eventsCount: number;
   eventList: Event[];
   loadedEventList: Event[];
+  account: User;
 
   constructor(
     public af: AngularFire,
     public navCtrl: NavController,
-    public navParams: NavParams
+    public navParams: NavParams,
+    public userData: UserData,
+    public utilEvents: Events
   ) {
+    this.userData.getProfile().then(user => {
+      this.account = JSON.parse(user);
+    });
     this.events = this.af.database.list('/events');
     this.events.subscribe(snapshots => {
       let events = [];
@@ -59,6 +66,10 @@ export class EventListPage {
       'eventId': event.$key,
       'event': event
     });
+  }
+
+  logout() {
+    this.utilEvents.publish('user:logout');
   }
 
   pushToEventCreate() {

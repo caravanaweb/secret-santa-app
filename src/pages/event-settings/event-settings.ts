@@ -46,7 +46,7 @@ export class EventSettingsPage {
 
     this.eventFirebaseObject.remove().then(_ => {
       this.events.publish('message:show', message, 'success');
-      this.navCtrl.push(EventListPage);
+      this.navCtrl.setRoot(EventListPage);
     });
   }
 }

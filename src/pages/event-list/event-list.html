@@ -1,6 +1,11 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Minhas Comemorações</ion-title>
+    <ion-buttons end *ngIf="account">
+      <button ion-button icon-only class="account-action" (click)="logout()">
+        <img [src]="account.picture" width="35" class="avatar-circle">
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 

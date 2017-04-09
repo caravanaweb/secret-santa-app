@@ -13,6 +13,7 @@ declare module 'api/models/app-models' {
   }
 
   interface User {
+    $key?: string;
     uid?: string;
     name?: string;
     username?: string;

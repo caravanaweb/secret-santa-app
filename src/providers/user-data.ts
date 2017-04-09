@@ -30,11 +30,7 @@ export class UserData {
     this.storage.set('uid', uid);
   };
 
-  setProfile(fireAuth) {
-    this.currentUser.uid = fireAuth.authState.auth.uid;
-    this.currentUser.name = fireAuth.authState.auth.displayName;
-    this.currentUser.email = fireAuth.authState.auth.email;
-    this.currentUser.picture = fireAuth.authState.auth.photoUrl;
-    this.storage.set('currentUser', this.currentUser);
+  setProfile(user) {
+    this.storage.set('currentUser', user);
   }
 }
