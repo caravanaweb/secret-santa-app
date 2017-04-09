@@ -26,4 +26,22 @@
       </button>
     </ion-item>
   </ion-card>
+
+  <ion-list>
+    <ion-item-divider>
+      {{selectedEvent.friends}} Participantes
+      <button ion-button icon-left clear item-right (click)="openAddParticipantModal()" *ngIf="selectedEvent.ownership === uid">
+        <ion-icon name="person-add"></ion-icon>
+        Adicionar
+      </button>
+    </ion-item-divider>
+
+    <ion-item *ngFor="let attendee of eventAttendees | async" [ngClass]="{'event-admin': attendee.admin}">
+      <ion-avatar item-left>
+        <img [src]="attendee.picture">
+      </ion-avatar>
+      <h2>{{attendee.name}}</h2>
+      <p>{{attendee.gift}}</p>
+    </ion-item>
+  </ion-list>
 </ion-content>

@@ -40,6 +40,25 @@ form {
       position: relative;
       top: -3px;
     }
+
+    &.item-input-transparent {
+      background-color: transparent;
+
+      .item-inner {
+        border: 0;
+
+        .input,
+        .label {
+          color: white
+        }
+
+        .text-input {
+          &::placeholder {
+            color: rgba(255,255,255,.8);
+          }
+        }
+      }
+    }
   }
 }
 

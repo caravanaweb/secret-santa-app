@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-navbar>
+    <form action="#" novalidate>
+      <ion-item class="item-input-transparent">
+          <ion-label><ion-icon name="search"></ion-icon></ion-label>
+          <ion-input type="text" placeholder="Adicionar Participantes..." (keyup)="getUsers($event)" (focus)="userListDisplay(true)"></ion-input>
+      </ion-item>
+    </form>
+    <ion-buttons end>
+      <button ion-button clean (click)="close()" >Done</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list class="user-list" *ngIf="isUserListVisible">
+    <button ion-item *ngFor="let user of userList" (click)="addParticipant(user)">
+      <ion-avatar item-left>
+        <img class="user-picture" [src]="user.picture">
+      </ion-avatar>
+      <h2 class="user-name">{{user.name}}</h2>
+      <p class="user-gift">{{user.gift}}</p>
+    </button>
+  </ion-list>
+
+  <ion-list class="participant-list" *ngIf="!isUserListVisible">
+    <ion-item-divider>
+      Participantes Adicionados
+    </ion-item-divider>
+
+    <ion-item-sliding *ngFor="let attendee of eventAttendees | async" [ngClass]="{'event-admin': attendee.admin}">
+      <ion-item>
+        <ion-avatar item-left>
+          <img [src]="attendee.picture">
+        </ion-avatar>
+        <h2>{{attendee.name}}</h2>
+        <p>{{attendee.gift}}</p>
+      </ion-item>
+      <ion-item-options side="right" *ngIf="!attendee.admin">
+        <button ion-button color="primary" (click)="removeParticipant(attendee)">
+          <ion-icon name="trash"></ion-icon>
+          Excluir
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>
