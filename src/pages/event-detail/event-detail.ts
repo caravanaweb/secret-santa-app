@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalController, NavController, NavParams } from 'ionic-angular';
-import { Event } from 'api/models/app-models';
+import { Event, User } from 'api/models/app-models';
 import { EventSettingsPage } from '../event-settings/event-settings';
 import { AddParticipantModalPage } from "../add-participant-modal/add-participant-modal";
 import { UserData } from '../../providers/user-data';
@@ -14,7 +14,7 @@ export class EventDetailPage {
   eventAttendees: FirebaseListObservable<any>;
   selectedEvent: Event;
   staticMapImage: string;
-  uid: string;
+  currentUser: User;
 
   constructor(
     public af: AngularFire,
@@ -30,16 +30,16 @@ export class EventDetailPage {
   }
 
   ngAfterViewInit() {
-    this.getProfileId();
+    this.getProfile();
   }
 
   getDirections() {
     window.open(`https://maps.google.com/?q=${this.selectedEvent.location}`, '_system');
   }
 
-  getProfileId() {
-    this.userData.getProfileId().then((uid) => {
-      this.uid = uid;
+  getProfile() {
+    this.userData.getProfile().then((currentUser) => {
+      this.currentUser = JSON.parse(currentUser);
     });
   }
 

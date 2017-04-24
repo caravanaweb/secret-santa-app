@@ -59,10 +59,10 @@ export class SecretSantaApp {
           if (queriedItems.length > 0) {
             queriedItems.forEach(snapshot => {
               let user: any = snapshot.val();
-              user.$key = snapshot.key;
-              this.userData.setProfile(JSON.stringify(user));
-              this.userData.setProfileId(auth$.uid);
-              this.nav.setRoot(EventListPage);
+
+              this.userData.setProfile(JSON.stringify(user)).then(_ => {
+                this.nav.setRoot(EventListPage);
+              });
             });
           } else {
             this.userData.setProfileId(auth$.uid);
@@ -76,12 +76,10 @@ export class SecretSantaApp {
   }
 
   listenToEvents() {
-    this.events.subscribe('user:login', (fireData) => {
-    });
-
     this.events.subscribe('user:logout', _ => {
       this.storage.clear();
       this.authService.signOut();
+      this.nav.setRoot(LoginPage);
     });
 
     this.events.subscribe('message:show', (messageStr, styleClass) => {

@@ -31,6 +31,6 @@ export class UserData {
   };
 
   setProfile(user) {
-    this.storage.set('currentUser', user);
+    return this.storage.set('currentUser', user);
   }
 }

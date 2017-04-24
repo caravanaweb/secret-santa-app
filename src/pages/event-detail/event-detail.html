@@ -2,8 +2,8 @@
   <ion-navbar color="primary">
     <ion-title>{{ selectedEvent.title }}</ion-title>
 
-    <ion-buttons end>
-      <button ion-button icon-only (click)="pushToEventSettingsPage()" *ngIf="selectedEvent.ownership === uid">
+    <ion-buttons end *ngIf="currentUser">
+      <button ion-button icon-only (click)="pushToEventSettingsPage()" *ngIf="selectedEvent.ownership === currentUser.uid">
         <ion-icon name="settings"></ion-icon>
       </button>
     </ion-buttons>
