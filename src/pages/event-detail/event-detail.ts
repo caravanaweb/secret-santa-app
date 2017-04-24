@@ -3,6 +3,7 @@ import { ModalController, NavController, NavParams } from 'ionic-angular';
 import { Event, User } from 'api/models/app-models';
 import { EventSettingsPage } from '../event-settings/event-settings';
 import { AddParticipantModalPage } from "../add-participant-modal/add-participant-modal";
+import { ProfilePage } from '../profile/profile';
 import { UserData } from '../../providers/user-data';
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 
@@ -41,6 +42,12 @@ export class EventDetailPage {
     this.userData.getProfile().then((currentUser) => {
       this.currentUser = JSON.parse(currentUser);
     });
+  }
+
+  goToProfile(userKey) {
+    if (userKey !== this.currentUser.$key) {
+      this.navCtrl.push(ProfilePage, {'userKey':userKey});
+    }
   }
 
   pushToEventSettingsPage() {

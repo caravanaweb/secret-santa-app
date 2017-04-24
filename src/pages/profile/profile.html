@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-navbar>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-item>
+      <ion-avatar item-left>
+        <img src="{{ (userFireObject | async)?.picture}}">
+      </ion-avatar>
+      <h2>{{(userFireObject | async)?.name}}</h2>
+      <p>{{(userFireObject | async)?.gift}}</p>
+    </ion-item>
+  </ion-card>
+  <ion-item text-wrap class="ss-alert">
+    <ion-icon name="bulb" large item-left class="align-top"></ion-icon>
+    <p>Seus depoimentos são anônimos. A ideia dessa área é ajudar na escolha do presente enviando informações pessoais, como qual time do coração, estilo musical, filmes ou outra informação que você achar relevante.</p>
+  </ion-item>
+
+  <ion-card text-center *ngIf="recommendationList &amp;&amp; recommendationList.length === 0">
+    <ion-card-header>
+      <ion-icon name="cube" color="primary"></ion-icon>
+      <strong>{{(userFireObject | async)?.name}} não possui recomendações</strong>
+    </ion-card-header>
+    <ion-card-content>
+      Seja o primeiro a enviar uma recomendação e ajude seus amigos a não errarem na escolha do presente.
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list class="ss-messages" *ngIf="recommendationList &amp;&amp;recommendationList.length > 0">
+    <ion-item-divider>Recomendações de presentes</ion-item-divider>
+    <ion-item text-wrap *ngFor="let recommendation of recommendationList">
+      <p>{{recommendation.text}}</p>
+    </ion-item>
+  </ion-list>
+
+</ion-content>
+
+<ion-footer>
+  <form action="#" #recommendationForm="ngForm" novalidate>
+    <ion-toolbar>
+      <ion-item>
+        <ion-input name="friendFeedback" #friendFeedback="ngModel" [(ngModel)]="recommendation" type="text" placeholder="Deixe sua sugestão de presente" required></ion-input>
+      </ion-item>
+      <ion-buttons end>
+        <button ion-button icon-right (click)="onAddRecommendation(friendFeedback)">
+          Enviar <ion-icon name="send"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-toolbar>
+  </form>
+</ion-footer>

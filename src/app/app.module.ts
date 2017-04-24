@@ -17,6 +17,7 @@ import { EventCreatePage } from '../pages/event-create/event-create';
 import { EventDetailPage } from '../pages/event-detail/event-detail';
 import { EventSettingsPage } from '../pages/event-settings/event-settings';
 import { AddParticipantModalPage } from "../pages/add-participant-modal/add-participant-modal";
+import { ProfilePage } from '../pages/profile/profile';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyCpGM7VQ6g6WuGvpukqQlIkd9Q12sD2kPU",
@@ -35,7 +36,8 @@ let pages = [
   EventListPage,
   EventDetailPage,
   EventSettingsPage,
-  AddParticipantModalPage
+  AddParticipantModalPage,
+  ProfilePage
 ];
 
 export function providers() {

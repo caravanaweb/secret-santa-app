@@ -36,7 +36,7 @@
       </button>
     </ion-item-divider>
 
-    <ion-item *ngFor="let attendee of eventAttendees | async" [ngClass]="{'event-admin': attendee.admin}">
+    <ion-item tappable (click)="goToProfile(attendee.$key)" *ngFor="let attendee of eventAttendees | async" [ngClass]="{'event-admin': attendee.admin}">
       <ion-avatar item-left>
         <img [src]="attendee.picture">
       </ion-avatar>

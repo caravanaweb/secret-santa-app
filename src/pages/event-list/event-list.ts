@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Events, NavController, NavParams } from 'ionic-angular';
 import { Event, User } from "api/models/app-models";
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
-import 'rxjs/add/operator/map'
 
 import { EventCreatePage } from '../event-create/event-create';
 import { EventDetailPage } from '../event-detail/event-detail';

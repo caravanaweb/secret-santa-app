@@ -123,3 +123,12 @@ ion-list {
   border-radius: 50%;
   overflow: hidden;
 }
+
+.toolbar {
+  .item-input {
+    .item-inner {
+      border-bottom-color: transparent !important;
+      box-shadow: none !important;
+    }
+  }
+}
