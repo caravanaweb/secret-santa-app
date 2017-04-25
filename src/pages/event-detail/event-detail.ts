@@ -5,7 +5,7 @@ import { EventSettingsPage } from '../event-settings/event-settings';
 import { AddParticipantModalPage } from "../add-participant-modal/add-participant-modal";
 import { ProfilePage } from '../profile/profile';
 import { UserData } from '../../providers/user-data';
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
 
 @Component({
   selector: 'page-event-detail',
@@ -13,6 +13,7 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 })
 export class EventDetailPage {
   eventAttendees: FirebaseListObservable<any>;
+  eventFirebaseObject: FirebaseObjectObservable<Event>;
   selectedEvent: Event;
   staticMapImage: string;
   currentUser: User;
@@ -24,8 +25,11 @@ export class EventDetailPage {
     public navParams: NavParams,
     public userData: UserData
   ) {
-    this.selectedEvent = <Event>navParams.get('event');
-    this.eventAttendees = this.af.database.list(`/eventAttendees/${this.selectedEvent.$key}`);
+    this.eventAttendees = af.database.list(`/eventAttendees/${navParams.get('eventId')}`);
+    this.eventFirebaseObject = af.database.object(`/events/${navParams.get('eventId')}`);
+    this.eventFirebaseObject.subscribe(snapshot => {
+      this.selectedEvent = <Event>snapshot;
+    });
 
     this.staticMapImage = `https://maps.googleapis.com/maps/api/staticmap?center=${this.selectedEvent.location}&zoom=17&size=640x640&markers=${this.selectedEvent.location}&key=AIzaSyAbeCFDXgQbjDU2-usm3rQNF1F3U6zj7Iw`;
   }
@@ -60,5 +64,51 @@ export class EventDetailPage {
   openAddParticipantModal() {
     let addParticipantModal = this.modalCtrl.create(AddParticipantModalPage, {eventId: this.selectedEvent.$key});
     addParticipantModal.present();
+  }
+
+  getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  raffleFriends() {
+    let index: number;
+    let item: string;
+    let previousItem: string = '';
+    let firstItem: string = '';
+
+    this.af.database.list('/eventAttendees/'+this.selectedEvent.$key, { preserveSnapshot: true })
+    .subscribe(snapshots => {
+      let friends = [];
+      snapshots.forEach(snapshot => {
+        friends.push(snapshot.key);
+      });
+
+      while(friends.length !== 0) {
+        index = this.getRandomInt(0, friends.length-1);
+        item = friends[index];
+
+        if (firstItem === '') firstItem = item;
+        if (previousItem === '') {
+          previousItem = item;
+        } else {
+          this.updateBestFriend(friends[index], previousItem);
+          previousItem = friends[index];
+        }
+
+        if (friends.length === 1) {
+          this.updateBestFriend(firstItem, friends[index]);
+        }
+
+        friends.splice(index, 1);
+      }
+    });
+
+    this.eventFirebaseObject.update({isRaffleFinished: true})
+  }
+
+  updateBestFriend(friend, bestFriend) {
+    this.eventAttendees.update(friend, {
+      best_friend: bestFriend
+    });
   }
 }

@@ -27,10 +27,14 @@
     </ion-item>
   </ion-card>
 
+  <div padding *ngIf="!selectedEvent.isRaffleFinished">
+    <button ion-button block secondary (click)="raffleFriends()">Realizar o Sorteio</button>
+  </div>
+
   <ion-list>
     <ion-item-divider>
       {{selectedEvent.friends}} Participantes
-      <button ion-button icon-left clear item-right (click)="openAddParticipantModal()" *ngIf="selectedEvent.ownership === uid">
+      <button ion-button icon-left clear item-right (click)="openAddParticipantModal()" *ngIf="currentUser &amp;&amp; selectedEvent.ownership === currentUser.uid &amp;&amp; !selectedEvent.isRaffleFinished">
         <ion-icon name="person-add"></ion-icon>
         Adicionar
       </button>
@@ -41,7 +45,10 @@
         <img [src]="attendee.picture">
       </ion-avatar>
       <h2>{{attendee.name}}</h2>
-      <p>{{attendee.gift}}</p>
+      <p *ngIf="attendee.best_friend !== currentUser.$key">{{attendee.gift}}</p>
+      <ion-badge color="primary" *ngIf="attendee.best_friend === currentUser.$key">Amigo Secreto</ion-badge>
+
+      <ion-icon item-right color="secondary" name="ios-happy-outline" *ngIf="attendee.best_friend === currentUser.$key"></ion-icon>
     </ion-item>
   </ion-list>
 </ion-content>

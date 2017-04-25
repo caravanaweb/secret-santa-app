@@ -59,6 +59,7 @@ export class SecretSantaApp {
           if (queriedItems.length > 0) {
             queriedItems.forEach(snapshot => {
               let user: any = snapshot.val();
+              user.$key = snapshot.key;
 
               this.userData.setProfile(JSON.stringify(user)).then(_ => {
                 this.nav.setRoot(EventListPage);
