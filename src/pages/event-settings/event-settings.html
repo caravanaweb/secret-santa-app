@@ -14,7 +14,7 @@
     <img [src]="event.picture" />
   </ion-card>
   <form #eventForm="ngForm" novalidate>
-    <ion-list no-lines>
+    <ion-list>
       <ion-item>
         <ion-label stacked>Nome</ion-label>
         <ion-input [(ngModel)]="event.title" name="title" type="text" #title="ngModel" required></ion-input>

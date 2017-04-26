@@ -34,7 +34,7 @@ export class EventCreatePage {
 
   ngAfterViewInit() {
     this.userData.getProfile().then(profile => {
-      this.currentUser = profile;
+      this.currentUser = JSON.parse(profile);
     });
   }
 

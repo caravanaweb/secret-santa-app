@@ -40,8 +40,9 @@ export class AccountPage {
       accountData = this.account;
       let userKey: string = this.users.push(accountData).key;
       accountData.$key = userKey;
-      this.userData.setProfile(accountData);
-      this.navCtrl.push(EventListPage);
+      this.userData.setProfile(JSON.stringify(accountData)).then(_ => {
+        this.navCtrl.setRoot(EventListPage);
+      });
     }
   }
 

@@ -27,7 +27,7 @@
     </ion-item>
   </ion-card>
 
-  <div padding *ngIf="!selectedEvent.isRaffleFinished">
+  <div padding *ngIf="!selectedEvent.isRaffleFinished &amp;&amp; selectedEvent.ownership === currentUser?.uid">
     <button ion-button block secondary (click)="raffleFriends()">Realizar o Sorteio</button>
   </div>
 
