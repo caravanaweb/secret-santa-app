@@ -17,16 +17,15 @@ export class LoginPage {
     public navParams: NavParams
   ) {}
 
-  private onSignInSuccess(response): void {
+  private onSignInSuccess(): void {
     this.isLoading = false;
-    this.events.publish('user:login', response);
   }
 
   connectWithFacebook(): void {
     this.isLoading = true;
 
     this._auth.signInWithFacebook()
-      .then((response) => this.onSignInSuccess(response))
+      .then(() => this.onSignInSuccess())
       .catch(() => {
         this.isLoading = false;
       })

@@ -8,6 +8,7 @@ import { UserData } from '../providers/user-data';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Keyboard } from '@ionic-native/keyboard';
+import { Facebook } from '@ionic-native/facebook';
 
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
@@ -43,6 +44,7 @@ let pages = [
 export function providers() {
   return [
     AuthService,
+    Facebook,
     Keyboard,
     SplashScreen,
     StatusBar,
