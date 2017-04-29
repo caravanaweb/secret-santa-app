@@ -4,6 +4,7 @@ import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import { Event, User } from "api/models/app-models";
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 import { Camera } from '@ionic-native/camera';
+import { Calendar } from '@ionic-native/calendar';
 
 import { UserData } from '../../providers/user-data';
 import { EventData } from '../../providers/event-data';
@@ -28,6 +29,7 @@ export class EventCreatePage {
   constructor(
     public af: AngularFire,
     public camera: Camera,
+    public calendar: Calendar,
     public navCtrl: NavController,
     public navParams: NavParams,
     public platform: Platform,
@@ -65,6 +67,21 @@ export class EventCreatePage {
     });
   }
 
+  toDateTime(dateStr, timeStr) {
+    let dateParts = dateStr.split('-');
+    let timeParts = timeStr.split(':');
+    return new Date(dateParts[0], dateParts[1] - 1, dateParts[2], timeParts[0], timeParts[1]);
+  }
+
+  addToCalendar(event) {
+    let eventDateTime = this.toDateTime(event.eventDate, event.eventTime);
+    let eventNotes = `O sorteio será realizado no dia ${event.raffleDate}`;
+    let endDateTime = eventDateTime;
+    endDateTime.setHours(endDateTime.getHours()+3);
+
+    this.calendar.createEvent(event.title, event.location, eventNotes, eventDateTime, endDateTime);
+  }
+
   onEventCreate(form) {
     this.submitted = true;
     let eventData: Event;
@@ -75,6 +92,10 @@ export class EventCreatePage {
       eventData = this.event;
       eventData.ownership = this.currentUser.uid;
       eventKey = this.events.push(eventData).key;
+
+      if (form.value.saveOnCalendar) {
+        this.addToCalendar(eventData);
+      }
 
       if (this.eventPicture && Camera['installed']()) {
         fireStorage = this.eventData.uploadEventPicture(eventKey, this.eventPicture, 'base64');

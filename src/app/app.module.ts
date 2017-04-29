@@ -12,6 +12,7 @@ import { Keyboard } from '@ionic-native/keyboard';
 import { Facebook } from '@ionic-native/facebook';
 import { Camera } from '@ionic-native/camera';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
+import { Calendar } from '@ionic-native/calendar';
 
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
@@ -55,6 +56,7 @@ export function providers() {
     UserData,
     EventData,
     LaunchNavigator,
+    Calendar,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ];
 }

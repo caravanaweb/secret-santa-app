@@ -90,4 +90,7 @@
     </plugin>
     <icon src="resources/android/icon/drawable-xhdpi-icon.png" />
     <plugin name="uk.co.workingedge.phonegap.plugin.launchnavigator" spec="~3.2.2" />
+    <plugin name="cordova-plugin-calendar" spec="~4.5.5">
+        <variable name="CALENDAR_USAGE_DESCRIPTION" value="Salvar evento no calendário do seu dispositivo" />
+    </plugin>
 </widget>

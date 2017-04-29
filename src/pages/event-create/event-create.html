@@ -56,6 +56,11 @@
         <ion-label stacked><ion-icon name="clock"></ion-icon> Horário de início</ion-label>
         <ion-datetime cancelText="Cancelar" doneText="Confirmar" [(ngModel)]="event.eventTime" name="eventTime" #eventTime="ngModel" displayFormat="HH:mm" pickerFormat="HH mm" minuteValues="0,30"></ion-datetime>
       </ion-item>
+
+      <ion-item>
+        <ion-label stacked>Adicionar ao meu calendário?</ion-label>
+        <ion-toggle [(ngModel)]="event.saveOnCalendar" name="saveOnCalendar" type="text" #saveOnCalendar="ngModel"></ion-toggle>
+      </ion-item>
     </ion-list>
 
     <div padding>
