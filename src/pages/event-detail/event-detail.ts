@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { ModalController, NavController, NavParams } from 'ionic-angular';
+import { ModalController, NavController, NavParams, Platform } from 'ionic-angular';
+import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { Event, User } from 'api/models/app-models';
 import { EventSettingsPage } from '../event-settings/event-settings';
 import { AddParticipantModalPage } from "../add-participant-modal/add-participant-modal";
@@ -23,7 +24,9 @@ export class EventDetailPage {
     public modalCtrl: ModalController,
     public navCtrl: NavController,
     public navParams: NavParams,
-    public userData: UserData
+    public userData: UserData,
+    public platform: Platform,
+    public launchNavigator: LaunchNavigator
   ) {
     this.eventAttendees = af.database.list(`/eventAttendees/${navParams.get('eventId')}`);
     this.eventFirebaseObject = af.database.object(`/events/${navParams.get('eventId')}`);
@@ -39,7 +42,12 @@ export class EventDetailPage {
   }
 
   getDirections() {
-    window.open(`https://maps.google.com/?q=${this.selectedEvent.location}`, '_system');
+    if (this.platform.is('mobileweb') || this.platform.is('core')) {
+      window.open(`https://maps.google.com/?q=${this.selectedEvent.location}`, '_system');
+    } else {
+      //https://ionicframework.com/docs/native/launch-navigator/
+      this.launchNavigator.navigate(this.selectedEvent.location);
+    }
   }
 
   getProfile() {
