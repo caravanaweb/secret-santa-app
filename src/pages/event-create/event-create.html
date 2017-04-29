@@ -5,19 +5,22 @@
 </ion-header>
 
 <ion-content>
+  <ion-fab top right edge>
+    <button ion-fab color="secondary" (click)="grabEventPicture()">
+      <ion-icon name="camera"></ion-icon>
+    </button>
+  </ion-fab>
+  <ion-card *ngIf="base64Image">
+    <img [src]="base64Image" />
+  </ion-card>
   <form #eventForm="ngForm" novalidate action="#">
+    <input type="file" #fileInput style="visibility: hidden; height: 0px" name="files[]" (change)="processWebImage($event)"/>
     <ion-list>
       <ion-item>
         <ion-label stacked><ion-icon name="happy"></ion-icon> Título</ion-label>
         <ion-input [(ngModel)]="event.title" name="title" type="text" #title="ngModel" required></ion-input>
       </ion-item>
       <p [hidden]="title.valid || submitted == false">Você precisa inserir um título para seu Amigo Secreto</p>
-
-      <ion-item>
-        <ion-label stacked><ion-icon name="image"></ion-icon> Imagem</ion-label>
-        <ion-input [(ngModel)]="event.picture" name="picture" type="text" #picture="ngModel" required></ion-input>
-      </ion-item>
-      <p [hidden]="picture.valid || submitted == false">Uma imagem vale mais que mil palavras não é mesmo?</p>
 
       <ion-item>
         <ion-label stacked><ion-icon name="compass"></ion-icon> Endereço</ion-label>

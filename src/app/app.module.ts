@@ -5,10 +5,12 @@ import { IonicStorageModule } from '@ionic/storage';
 import { AngularFireModule } from 'angularfire2';
 import { AuthService } from '../providers/auth-service';
 import { UserData } from '../providers/user-data';
+import { EventData } from '../providers/event-data';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Keyboard } from '@ionic-native/keyboard';
 import { Facebook } from '@ionic-native/facebook';
+import { Camera } from '@ionic-native/camera';
 
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
@@ -44,11 +46,13 @@ let pages = [
 export function providers() {
   return [
     AuthService,
+    Camera,
     Facebook,
     Keyboard,
     SplashScreen,
     StatusBar,
     UserData,
+    EventData,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ];
 }
