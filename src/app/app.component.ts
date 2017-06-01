@@ -4,9 +4,9 @@ import { Storage } from '@ionic/storage';
 import { Keyboard } from '@ionic-native/keyboard';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-import { AuthService } from '../providers/auth-service';
-import { AngularFire } from 'angularfire2';
-import { UserData } from '../providers/user-data';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AuthProvider } from '../providers/auth';
+import { UserProvider } from '../providers/user';
 
 import { EventListPage } from '../pages/event-list/event-list';
 import { LoginPage } from '../pages/login/login';
@@ -17,11 +17,11 @@ import { AccountPage } from '../pages/account/account';
 })
 export class SecretSantaApp {
   @ViewChild(Nav) nav: Nav;
-  rootPage: Component;
+  rootPage: any;
 
   constructor(
-    public af: AngularFire,
-    public authService: AuthService,
+    public afAuth: AngularFireAuth,
+    private authProvider: AuthProvider,
     public events: Events,
     private keyboard: Keyboard,
     public platform: Platform,
@@ -29,11 +29,11 @@ export class SecretSantaApp {
     private toastCtrl: ToastController,
     public statusBar: StatusBar,
     public storage: Storage,
-    public userData: UserData
+    public userProvider: UserProvider
   ) {
+    this.isUserLoggedIn();
     this.initializeApp();
     this.listenToEvents();
-    this.isUserLoggedIn();
   }
 
   initializeApp() {
@@ -45,33 +45,26 @@ export class SecretSantaApp {
   }
 
   isUserLoggedIn() {
-    this.af.auth.subscribe(auth$ => {
-      if (auth$) {
-        const queryObservable = this.af.database.list('/users', {
-          preserveSnapshot: true,
-          query: {
-            orderByChild: 'uid',
-            equalTo: auth$.uid
-          }
-        });
-
-        queryObservable.subscribe(queriedItems => {
-          if (queriedItems.length > 0) {
-            queriedItems.forEach(snapshot => {
-              let user: any = snapshot.val();
-              user.$key = snapshot.key;
-
-              this.userData.setProfile(JSON.stringify(user)).then(_ => {
-                this.nav.setRoot(EventListPage);
-              });
-            });
-          } else {
-            this.userData.setProfileId(auth$.uid);
-            this.nav.setRoot(AccountPage, { 'auth': auth$ });
-          }
-        });
+    this.afAuth.authState.subscribe(user => {
+      if (!user) {
+        this.nav.setRoot(LoginPage);
       } else {
-        this.rootPage = LoginPage;
+        this.userProvider
+          .checkUserAccount(user)
+          .subscribe(queriedItems => {
+            if (queriedItems.length > 0) {
+              queriedItems.forEach(snapshot => {
+                let user: any = snapshot.val();
+                user.$key = snapshot.key;
+
+                this.userProvider.setProfile(JSON.stringify(user)).then(_ => {
+                  this.nav.setRoot(EventListPage);
+                });
+              });
+            } else {
+              this.nav.setRoot(AccountPage, { 'firebaseUser': user });
+            }
+          });
       }
     });
   }
@@ -79,8 +72,9 @@ export class SecretSantaApp {
   listenToEvents() {
     this.events.subscribe('user:logout', _ => {
       this.storage.clear();
-      this.authService.signOut();
-      this.nav.setRoot(LoginPage);
+      this.authProvider.signOut().then(_ => {
+        this.nav.setRoot(LoginPage);
+      });
     });
 
     this.events.subscribe('message:show', (messageStr, styleClass) => {
@@ -92,6 +86,6 @@ export class SecretSantaApp {
       });
 
       toast.present();
-    })
+    });
   }
 }

@@ -1,14 +1,27 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { User } from 'api/models/app-models';
+import { FirebaseProvider } from './firebase';
+
 
 @Injectable()
-export class UserData {
+export class UserProvider {
   currentUser: User;
 
   constructor(
+    public firebaseProvider: FirebaseProvider,
     public storage: Storage
   ) {}
+
+  checkUserAccount(user) {
+    return this.firebaseProvider.query('/users', {
+      preserveSnapshot: true,
+      query: {
+        orderByChild: 'uid',
+        equalTo: user.uid
+      }
+    });
+  }
 
   getProfile() {
     return this.storage.get('currentUser');

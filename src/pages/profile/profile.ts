@@ -1,8 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { Content, NavController, NavParams } from 'ionic-angular';
 import { User } from 'api/models/app-models';
-import { UserData } from '../../providers/user-data';
-import { AngularFire, FirebaseObjectObservable, FirebaseListObservable } from 'angularfire2';
+import { UserProvider } from '../../providers/user';
+import { FirebaseProvider } from '../../providers/firebase'
+import { FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 
 @Component({
   selector: 'page-profile',
@@ -17,13 +18,13 @@ export class ProfilePage {
   userFireObject: FirebaseObjectObservable<User>;
 
   constructor(
-    af: AngularFire,
+    public firebaseProvider: FirebaseProvider,
     public navCtrl: NavController,
     public navParams: NavParams,
-    public userData: UserData
+    public userProvider: UserProvider
   ) {
-    this.userFireObject = af.database.object(`/users/${navParams.get('userKey')}`);
-    this.recommendations = af.database.list(`/recommendations/${navParams.get('userKey')}`);
+    this.userFireObject = firebaseProvider.getObject(`/users/${navParams.get('userKey')}`);
+    this.recommendations = firebaseProvider.getList(`/recommendations/${navParams.get('userKey')}`);
 
     this.recommendations.subscribe(snapshots => {
       let recommendations = [];
@@ -36,7 +37,7 @@ export class ProfilePage {
   }
 
   ngAfterViewInit() {
-    this.userData.getProfile().then((currentUser) => {
+    this.userProvider.getProfile().then((currentUser) => {
       this.currentUser = JSON.parse(currentUser);
     });
   }

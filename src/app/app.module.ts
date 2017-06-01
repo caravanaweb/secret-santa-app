@@ -1,11 +1,6 @@
+import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { SecretSantaApp } from './app.component';
-import { IonicStorageModule } from '@ionic/storage';
-import { AngularFireModule } from 'angularfire2';
-import { AuthService } from '../providers/auth-service';
-import { UserData } from '../providers/user-data';
-import { EventData } from '../providers/event-data';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Keyboard } from '@ionic-native/keyboard';
@@ -13,6 +8,17 @@ import { Facebook } from '@ionic-native/facebook';
 import { Camera } from '@ionic-native/camera';
 import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { Calendar } from '@ionic-native/calendar';
+import { IonicStorageModule } from '@ionic/storage';
+import { SecretSantaApp } from './app.component';
+
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+
+import { FirebaseProvider } from '../providers/firebase';
+import { AuthProvider } from '../providers/auth';
+import { UserProvider } from '../providers/user';
+import { EventProvider } from '../providers/event';
 
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
@@ -28,6 +34,7 @@ export const firebaseConfig = {
   apiKey: "AIzaSyCpGM7VQ6g6WuGvpukqQlIkd9Q12sD2kPU",
   authDomain: "secret-santa-1481683764948.firebaseapp.com",
   databaseURL: "https://secret-santa-1481683764948.firebaseio.com",
+  projectId: "secret-santa-1481683764948",
   storageBucket: "secret-santa-1481683764948.appspot.com",
   messagingSenderId: "56975771687"
 };
@@ -47,16 +54,17 @@ let pages = [
 
 export function providers() {
   return [
-    AuthService,
+    AuthProvider,
     Camera,
     Facebook,
     Keyboard,
     SplashScreen,
     StatusBar,
-    UserData,
-    EventData,
+    UserProvider,
+    EventProvider,
     LaunchNavigator,
     Calendar,
+    FirebaseProvider,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ];
 }
@@ -64,9 +72,12 @@ export function providers() {
 @NgModule({
   declarations: pages,
   imports: [
+    BrowserModule,
     IonicModule.forRoot(SecretSantaApp),
     IonicStorageModule.forRoot(),
-    AngularFireModule.initializeApp(firebaseConfig)
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
   entryComponents: pages,

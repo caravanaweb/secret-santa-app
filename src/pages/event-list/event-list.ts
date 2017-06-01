@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { Events, NavController, NavParams } from 'ionic-angular';
 import { Event, User } from "api/models/app-models";
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { FirebaseProvider } from '../../providers/firebase'
+import { FirebaseListObservable } from 'angularfire2/database';
 
 import { EventCreatePage } from '../event-create/event-create';
 import { EventDetailPage } from '../event-detail/event-detail';
-import { UserData } from '../../providers/user-data';
+import { UserProvider } from '../../providers/user';
 
 @Component({
   selector: 'page-event-list',
@@ -19,16 +20,16 @@ export class EventListPage {
   account: User;
 
   constructor(
-    public af: AngularFire,
+    public firebaseProvider: FirebaseProvider,
     public navCtrl: NavController,
     public navParams: NavParams,
-    public userData: UserData,
+    public userProvider: UserProvider,
     public utilEvents: Events
   ) {
-    this.userData.getProfile().then(user => {
+    this.userProvider.getProfile().then(user => {
       this.account = JSON.parse(user);
     });
-    this.events = this.af.database.list('/events');
+    this.events = firebaseProvider.getList('/events');
     this.events.subscribe(snapshots => {
       let events = [];
       snapshots.forEach(snapshot => {

@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
-import firebase from 'firebase';
-import { Event, User } from "api/models/app-models";
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { Event } from "api/models/app-models";
+import { FirebaseProvider } from "./firebase";
+import { FirebaseListObservable } from 'angularfire2/database';
+import * as firebase from 'firebase/app';
+import 'firebase/storage';
 
 @Injectable()
-export class EventData {
+export class EventProvider {
   events: FirebaseListObservable<Event>;
   public eventPictureRef: any;
 
   constructor(
-    public af: AngularFire
+    public firebaseProvider: FirebaseProvider,
   ) {
-    this.events = af.database.list('/events');
+    this.events = firebaseProvider.getList('/events');
     this.eventPictureRef = firebase.storage().ref('/events');
   }
 

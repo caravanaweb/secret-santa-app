@@ -5,8 +5,9 @@ import { Event, User } from 'api/models/app-models';
 import { EventSettingsPage } from '../event-settings/event-settings';
 import { AddParticipantModalPage } from "../add-participant-modal/add-participant-modal";
 import { ProfilePage } from '../profile/profile';
-import { UserData } from '../../providers/user-data';
-import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
+import { UserProvider } from '../../providers/user';
+import { FirebaseProvider } from '../../providers/firebase'
+import { FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
 
 @Component({
   selector: 'page-event-detail',
@@ -20,16 +21,16 @@ export class EventDetailPage {
   currentUser: User;
 
   constructor(
-    public af: AngularFire,
+    public firebaseProvider: FirebaseProvider,
     public modalCtrl: ModalController,
     public navCtrl: NavController,
     public navParams: NavParams,
-    public userData: UserData,
+    public userProvider: UserProvider,
     public platform: Platform,
     public launchNavigator: LaunchNavigator
   ) {
-    this.eventAttendees = af.database.list(`/eventAttendees/${navParams.get('eventId')}`);
-    this.eventFirebaseObject = af.database.object(`/events/${navParams.get('eventId')}`);
+    this.eventAttendees = firebaseProvider.getList(`/eventAttendees/${navParams.get('eventId')}`);
+    this.eventFirebaseObject = firebaseProvider.getObject(`/events/${navParams.get('eventId')}`);
     this.eventFirebaseObject.subscribe(snapshot => {
       this.selectedEvent = <Event>snapshot;
     });
@@ -51,7 +52,7 @@ export class EventDetailPage {
   }
 
   getProfile() {
-    this.userData.getProfile().then((currentUser) => {
+    this.userProvider.getProfile().then((currentUser) => {
       this.currentUser = JSON.parse(currentUser);
     });
   }
@@ -84,7 +85,7 @@ export class EventDetailPage {
     let previousItem: string = '';
     let firstItem: string = '';
 
-    this.af.database.list('/eventAttendees/'+this.selectedEvent.$key, { preserveSnapshot: true })
+    this.firebaseProvider.query('/eventAttendees/'+this.selectedEvent.$key, { preserveSnapshot: true })
     .subscribe(snapshots => {
       let friends = [];
       snapshots.forEach(snapshot => {

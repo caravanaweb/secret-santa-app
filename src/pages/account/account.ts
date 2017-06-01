@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { User } from "api/models/app-models";
-import { UserData } from '../../providers/user-data';
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { UserProvider } from '../../providers/user';
+import { FirebaseProvider } from '../../providers/firebase'
+import { FirebaseListObservable } from 'angularfire2/database';
 
 import { EventListPage } from '../../pages/event-list/event-list';
 
@@ -13,23 +14,22 @@ import { EventListPage } from '../../pages/event-list/event-list';
 export class AccountPage {
   account: User = {};
   submitted: boolean = false;
-  users: FirebaseListObservable<User>;
+  users: FirebaseListObservable<User[]>;
 
   constructor(
-    af: AngularFire,
+    public firebaseProvider: FirebaseProvider,
     public navCtrl: NavController,
     public navParams: NavParams,
-    public userData: UserData
+    public userProvider: UserProvider
   ) {
-    let fireData = navParams.get('auth');
+    let firebaseUser = navParams.get('firebaseUser');
     this.account = {
-      'uid': fireData.uid,
-      'name': fireData.facebook.displayName,
-      'email': fireData.facebook.email,
-      'picture': fireData.facebook.photoURL
-
+      'uid': firebaseUser.uid,
+      'name': firebaseUser.displayName,
+      'email': firebaseUser.email,
+      'picture': firebaseUser.photoURL
     }
-    this.users = af.database.list('/users');
+    this.users = firebaseProvider.getList('/users');
   }
 
   onAccountCreate(form) {
@@ -40,10 +40,9 @@ export class AccountPage {
       accountData = this.account;
       let userKey: string = this.users.push(accountData).key;
       accountData.$key = userKey;
-      this.userData.setProfile(JSON.stringify(accountData)).then(_ => {
+      this.userProvider.setProfile(JSON.stringify(accountData)).then(_ => {
         this.navCtrl.setRoot(EventListPage);
       });
     }
   }
-
 }

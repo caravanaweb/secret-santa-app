@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Events, NavController, NavParams, ViewController } from 'ionic-angular';
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { FirebaseProvider } from '../../providers/firebase'
+import { FirebaseListObservable } from 'angularfire2/database';
 import { User } from 'api/models/app-models';
 
 @Component({
@@ -9,22 +10,22 @@ import { User } from 'api/models/app-models';
 })
 export class AddParticipantModalPage {
   isUserListVisible: boolean;
-  users: FirebaseListObservable<any>;
+  users: FirebaseListObservable<User[]>;
   usersCount: number;
   userList: User[];
   loadedUserList: User[];
   eventAttendees: FirebaseListObservable<any>;
 
   constructor(
-    public af: AngularFire,
     public events: Events,
     public navCtrl: NavController,
     public navParams: NavParams,
-    public viewCtrl: ViewController
+    public viewCtrl: ViewController,
+    public firebaseProvider: FirebaseProvider
   ) {
     this.isUserListVisible = false;
-    this.eventAttendees = this.af.database.list(`/eventAttendees/${this.navParams.get('eventId')}`);
-    this.users = this.af.database.list('/users', {
+    this.eventAttendees = firebaseProvider.getList(`/eventAttendees/${this.navParams.get('eventId')}`);
+    this.users = firebaseProvider.query('/users', {
       query: {
         orderByChild: 'name'
       }

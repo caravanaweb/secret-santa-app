@@ -1,13 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
 import { Events, NavController, NavParams, Platform } from 'ionic-angular';
-import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Event, User } from "api/models/app-models";
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { FirebaseProvider } from '../../providers/firebase'
+import { FirebaseListObservable } from 'angularfire2/database';
 import { Camera } from '@ionic-native/camera';
 import { Calendar } from '@ionic-native/calendar';
 
-import { UserData } from '../../providers/user-data';
-import { EventData } from '../../providers/event-data';
+import { UserProvider } from '../../providers/user';
+import { EventProvider } from '../../providers/event';
 import { EventListPage } from '../../pages/event-list/event-list';
 
 @Component({
@@ -27,38 +28,38 @@ export class EventCreatePage {
   base64Image: any;
 
   constructor(
-    public af: AngularFire,
+    public firebaseProvider: FirebaseProvider,
     public camera: Camera,
     public calendar: Calendar,
     public navCtrl: NavController,
     public navParams: NavParams,
     public platform: Platform,
     public sanitizer: DomSanitizer,
-    public userData: UserData,
-    public eventData: EventData,
+    public userProvider: UserProvider,
+    public eventProvider: EventProvider,
     public utilEvents: Events
   ) {
     this.today = new Date();
     this.minDate = this.today.toISOString().substring(0,10);
     this.event.raffleDate = this.minDate;
-    this.events = af.database.list('/events');
+    this.events = firebaseProvider.getList('/events');
   }
 
   ngAfterViewInit() {
-    this.userData.getProfile().then(profile => {
+    this.userProvider.getProfile().then(profile => {
       this.currentUser = JSON.parse(profile);
     });
   }
 
   onRaffleDateAccept(event) {
-    this.minEventDate = new Date(event.year.value, event.month.value-1, event.day.value).toISOString().substring(0,10);
+    this.minEventDate = new Date(event.year, event.month-1, event.day).toISOString().substring(0,10);
   }
 
   addAdminToEvent(eventId) {
     let eventAttendees: any;
     let user = this.currentUser;
 
-    eventAttendees = this.af.database.list(`/eventAttendees/${eventId}`);
+    eventAttendees = this.firebaseProvider.getList(`/eventAttendees/${eventId}`);
     return eventAttendees.update(user.$key, {
       name: user.name,
       gift: user.gift,
@@ -98,13 +99,13 @@ export class EventCreatePage {
       }
 
       if (this.eventPicture && Camera['installed']()) {
-        fireStorage = this.eventData.uploadEventPicture(eventKey, this.eventPicture, 'base64');
+        fireStorage = this.eventProvider.uploadEventPicture(eventKey, this.eventPicture, 'base64');
       } else {
-        fireStorage = this.eventData.uploadEventPicture(eventKey, this.eventPicture);
+        fireStorage = this.eventProvider.uploadEventPicture(eventKey, this.eventPicture);
       }
 
       fireStorage.then(snapshot => {
-        this.eventData.updateEventPicture(eventKey, snapshot.downloadURL).then(_ => {
+        this.eventProvider.updateEventPicture(eventKey, snapshot.downloadURL).then(_ => {
           this.addAdminToEvent(eventKey).then(_ => {
             this.utilEvents.publish('message:show', `O Amigo Secreto "${this.event.title}" foi criado com sucesso.`, 'success');
             this.navCtrl.push(EventListPage);
@@ -137,8 +138,6 @@ export class EventCreatePage {
   }
 
   processWebImage(event) {
-    let input = this.fileInput.nativeElement;
-
     var reader = new FileReader();
     reader.onload = (readerEvent) => {
       var imageData = (readerEvent.target as any).result;

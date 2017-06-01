@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Events, NavController, NavParams } from 'ionic-angular';
 
-import { AuthService } from '../../providers/auth-service';
+import { AuthProvider } from '../../providers/auth';
 
 @Component({
   selector: 'page-login',
@@ -11,7 +11,7 @@ export class LoginPage {
   isLoading: boolean;
 
   constructor(
-    private _auth: AuthService,
+    private _auth: AuthProvider,
     public events: Events,
     public navCtrl: NavController,
     public navParams: NavParams
