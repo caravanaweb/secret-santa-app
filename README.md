@@ -26,3 +26,5 @@ The main purpose of this demo app is to have a great resource related to **Ionic
 - [AngularFire2](https://github.com/angular/angularfire2): v4.0.0-rc.0
 - [Firebase JS SDK](https://github.com/firebase/firebase-js-sdk): v3.9.0
 - [Ionic](https://github.com/ionic-team/ionic): v3.3.0
+
+**Secret Santa** [icon](https://dribbble.com/shots/3116994-Secret-Santa) by Harri Ojanen
