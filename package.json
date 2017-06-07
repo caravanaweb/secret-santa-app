@@ -4,7 +4,7 @@
     "author": "Caravana Web",
     "homepage": "http://caravanaweb.com.br/",
     "private": true,
-    "version": "0.0.1",
+    "version": "1.0.0",
     "scripts": {
         "clean": "ionic-app-scripts clean",
         "build": "ionic-app-scripts build",
