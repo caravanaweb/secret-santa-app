@@ -4,11 +4,11 @@ The main purpose of this demo app is to have a great resource related to **Ionic
 
 ## Getting Started
 
-- Clone this repository: `git clone https://github.com/juarezpaf/ionic-secret-santa.git`
+- Clone this repository
 - Run `npm install`
-- Install the ionic CLI (`npm install -g ionic`)
+- Install the Ionic CLI & Cordova (`npm install -g ionic cordova`)
 - Run `ionic serve` in a terminal from the project root
-- Have fun
+- Have fun 
 
 ## Pages & Use Cases
 
@@ -23,8 +23,8 @@ The main purpose of this demo app is to have a great resource related to **Ionic
 
 ## Cool Stuff
 
-- [AngularFire2](https://github.com/angular/angularfire2): v4.0.0-rc.0
-- [Firebase JS SDK](https://github.com/firebase/firebase-js-sdk): v3.9.0
-- [Ionic](https://github.com/ionic-team/ionic): v3.3.0
+- [AngularFire2](https://github.com/angular/angularfire2): 5.0.0-rc.3
+- [Firebase JS SDK](https://github.com/firebase/firebase-js-sdk): 4.6.0
+- [Ionic](https://github.com/ionic-team/ionic): 3.7.1
 
 **Secret Santa** [icon](https://dribbble.com/shots/3116994-Secret-Santa) by Harri Ojanen
