@@ -12,23 +12,13 @@ import { IonicStorageModule } from '@ionic/storage';
 import { SecretSantaApp } from './app.component';
 
 import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 
 import { FirebaseProvider } from '../providers/firebase';
 import { AuthProvider } from '../providers/auth';
 import { UserProvider } from '../providers/user';
 import { EventProvider } from '../providers/event';
-
-import { HomePage } from '../pages/home/home';
-import { LoginPage } from '../pages/login/login';
-import { AccountPage } from '../pages/account/account';
-import { EventListPage } from '../pages/event-list/event-list';
-import { EventCreatePage } from '../pages/event-create/event-create';
-import { EventDetailPage } from '../pages/event-detail/event-detail';
-import { EventSettingsPage } from '../pages/event-settings/event-settings';
-import { AddParticipantModalPage } from "../pages/add-participant-modal/add-participant-modal";
-import { ProfilePage } from '../pages/profile/profile';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyCpGM7VQ6g6WuGvpukqQlIkd9Q12sD2kPU",
@@ -40,16 +30,7 @@ export const firebaseConfig = {
 };
 
 let pages = [
-  SecretSantaApp,
-  HomePage,
-  LoginPage,
-  AccountPage,
-  EventCreatePage,
-  EventListPage,
-  EventDetailPage,
-  EventSettingsPage,
-  AddParticipantModalPage,
-  ProfilePage
+  SecretSantaApp
 ];
 
 export function providers() {
@@ -76,7 +57,7 @@ export function providers() {
     IonicModule.forRoot(SecretSantaApp),
     IonicStorageModule.forRoot(),
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireDatabaseModule,
+    AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule
   ],
   bootstrap: [IonicApp],

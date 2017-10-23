@@ -1,43 +1,47 @@
 import { Component } from '@angular/core';
-import { Events, NavController, NavParams } from 'ionic-angular';
+import { Events, NavController, IonicPage } from 'ionic-angular';
 import { Event, User } from "api/models/app-models";
 import { FirebaseProvider } from '../../providers/firebase'
-import { FirebaseListObservable } from 'angularfire2/database';
+import { Observable } from 'rxjs/Observable';
 
-import { EventCreatePage } from '../event-create/event-create';
-import { EventDetailPage } from '../event-detail/event-detail';
 import { UserProvider } from '../../providers/user';
+import { AngularFirestoreCollection } from 'angularfire2/firestore';
 
+@IonicPage({
+  segment: 'events'
+})
 @Component({
   selector: 'page-event-list',
   templateUrl: 'event-list.html'
 })
 export class EventListPage {
-  events: FirebaseListObservable<any>;
-  eventsCount: number;
+  private eventCollection: AngularFirestoreCollection<Event>;
+  events: Observable<Event[]>;
   eventList: Event[];
   loadedEventList: Event[];
   account: User;
+  eventsCount: number;
 
   constructor(
     public firebaseProvider: FirebaseProvider,
     public navCtrl: NavController,
-    public navParams: NavParams,
     public userProvider: UserProvider,
     public utilEvents: Events
   ) {
     this.userProvider.getProfile().then(user => {
       this.account = JSON.parse(user);
     });
-    this.events = firebaseProvider.getList('/events');
-    this.events.subscribe(snapshots => {
-      let events = [];
-      snapshots.forEach(snapshot => {
-        events.push(snapshot);
+    this.eventCollection = firebaseProvider.afs.collection<Event>('events');
+    this.events = this.eventCollection.snapshotChanges().map(actions => {
+      return actions.map(a => {
+        const data = a.payload.doc.data() as Event;
+        const id = a.payload.doc.id;
+        return { id, ...data };
       });
-
-      this.loadedEventList = this.eventList = events;
-      this.eventsCount = events.length;
+    });
+    
+    this.events.subscribe(data => {
+      this.eventsCount = data.length;
     });
   }
 
@@ -61,18 +65,17 @@ export class EventListPage {
     });
   }
 
+  goToEventCreate() {
+    this.navCtrl.push('EventCreatePage');
+  }
+
   goToEventPage(event) {
-    this.navCtrl.push(EventDetailPage, {
-      'eventId': event.$key,
-      'event': event
+    this.navCtrl.push('EventDetailPage', {
+      'id': event.id
     });
   }
 
   logout() {
     this.utilEvents.publish('user:logout');
-  }
-
-  pushToEventCreate() {
-    this.navCtrl.push(EventCreatePage);
   }
 }

@@ -9,7 +9,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="event">
   <ion-card>
     <img [src]="event.picture" />
   </ion-card>

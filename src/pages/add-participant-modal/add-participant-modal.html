@@ -13,8 +13,8 @@
 </ion-header>
 
 <ion-content>
-  <ion-list class="user-list" *ngIf="isUserListVisible">
-    <button ion-item *ngFor="let user of userList" (click)="addParticipant(user)">
+  <ion-list class="user-list">
+    <button ion-item *ngFor="let user of users | async" (click)="addParticipant(user)">
       <ion-avatar item-left>
         <img class="user-picture" [src]="user.picture">
       </ion-avatar>
@@ -23,7 +23,7 @@
     </button>
   </ion-list>
 
-  <ion-list class="participant-list" *ngIf="!isUserListVisible">
+  <ion-list class="participant-list">
     <ion-item-divider>
       Participantes Adicionados
     </ion-item-divider>

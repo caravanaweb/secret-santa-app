@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, IonicPage } from 'ionic-angular';
 import { User } from "api/models/app-models";
 import { UserProvider } from '../../providers/user';
-import { FirebaseProvider } from '../../providers/firebase'
-import { FirebaseListObservable } from 'angularfire2/database';
+import { FirebaseProvider } from '../../providers/firebase';
+import { AngularFirestoreDocument } from 'angularfire2/firestore';
+import { Observable } from 'rxjs/Observable';
 
-import { EventListPage } from '../../pages/event-list/event-list';
-
+@IonicPage()
 @Component({
   selector: 'page-account',
   templateUrl: 'account.html'
@@ -14,7 +14,7 @@ import { EventListPage } from '../../pages/event-list/event-list';
 export class AccountPage {
   account: User = {};
   submitted: boolean = false;
-  users: FirebaseListObservable<User[]>;
+  createdAccount: AngularFirestoreDocument<User>;
 
   constructor(
     public firebaseProvider: FirebaseProvider,
@@ -22,27 +22,27 @@ export class AccountPage {
     public navParams: NavParams,
     public userProvider: UserProvider
   ) {
-    let firebaseUser = navParams.get('firebaseUser');
+    let firebaseUser = navParams.get('authenticatedUser');
+    
     this.account = {
       'uid': firebaseUser.uid,
       'name': firebaseUser.displayName,
       'email': firebaseUser.email,
       'picture': firebaseUser.photoURL
     }
-    this.users = firebaseProvider.getList('/users');
   }
 
-  onAccountCreate(form) {
+  async onAccountCreate(form) {
     this.submitted = true;
     let accountData: User;
 
     if (form.valid) {
       accountData = this.account;
-      let userKey: string = this.users.push(accountData).key;
-      accountData.$key = userKey;
-      this.userProvider.setProfile(JSON.stringify(accountData)).then(_ => {
-        this.navCtrl.setRoot(EventListPage);
-      });
+      const createdAccount: any = await this.firebaseProvider.addItem('/users', accountData);
+      accountData.$key = createdAccount.id;
+      
+      await this.userProvider.setProfile(JSON.stringify(accountData));
+      this.navCtrl.setRoot('EventListPage');
     }
   }
 }

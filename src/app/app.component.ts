@@ -7,10 +7,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthProvider } from '../providers/auth';
 import { UserProvider } from '../providers/user';
-
-import { EventListPage } from '../pages/event-list/event-list';
-import { LoginPage } from '../pages/login/login';
-import { AccountPage } from '../pages/account/account';
+import { FirebaseProvider } from '../providers/firebase';
 
 @Component({
   templateUrl: 'app.html'
@@ -29,7 +26,8 @@ export class SecretSantaApp {
     private toastCtrl: ToastController,
     public statusBar: StatusBar,
     public storage: Storage,
-    public userProvider: UserProvider
+    public userProvider: UserProvider,
+    public firebaseProvider: FirebaseProvider
   ) {
     this.isUserLoggedIn();
     this.initializeApp();
@@ -47,24 +45,27 @@ export class SecretSantaApp {
   isUserLoggedIn() {
     this.afAuth.authState.subscribe(user => {
       if (!user) {
-        this.nav.setRoot(LoginPage);
+        this.nav.setRoot('LoginPage');
       } else {
-        this.userProvider
-          .checkUserAccount(user)
-          .subscribe(queriedItems => {
-            if (queriedItems.length > 0) {
-              queriedItems.forEach(snapshot => {
-                let user: any = snapshot.val();
-                user.$key = snapshot.key;
+        this.userProvider.checkUserAccount(user).subscribe(queriedItems => {
+          if (queriedItems.length > 0) {
+            queriedItems.forEach(snapshot => {
+              let user: any;
+              let userObservable: any = this.firebaseProvider.getObject(snapshot.payload.doc.ref.path).valueChanges();
+
+              userObservable.subscribe(userData => {
+                user = userData;
+                user.$key = snapshot.payload.doc.id;
 
                 this.userProvider.setProfile(JSON.stringify(user)).then(_ => {
-                  this.nav.setRoot(EventListPage);
+                  this.nav.setRoot('EventListPage');
                 });
               });
-            } else {
-              this.nav.setRoot(AccountPage, { 'firebaseUser': user });
-            }
-          });
+            });
+          } else {
+            this.nav.setRoot('AccountPage', { 'authenticatedUser': user });
+          }
+        });
       }
     });
   }
@@ -73,7 +74,7 @@ export class SecretSantaApp {
     this.events.subscribe('user:logout', _ => {
       this.storage.clear();
       this.authProvider.signOut().then(_ => {
-        this.nav.setRoot(LoginPage);
+        this.nav.setRoot('LoginPage');
       });
     });
 

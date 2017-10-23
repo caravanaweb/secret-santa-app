@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { User } from 'api/models/app-models';
+import { AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { FirebaseProvider } from './firebase';
-
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class UserProvider {
+  userCollections: AngularFirestoreCollection<User>;
+  users: Observable<User[]>;
   currentUser: User;
 
   constructor(
@@ -14,13 +17,10 @@ export class UserProvider {
   ) {}
 
   checkUserAccount(user) {
-    return this.firebaseProvider.query('/users', {
-      preserveSnapshot: true,
-      query: {
-        orderByChild: 'uid',
-        equalTo: user.uid
-      }
+    this.userCollections = this.firebaseProvider.query('/users', ref => {
+      return ref.where('uid', '==', user.uid);
     });
+    return this.userCollections.snapshotChanges();
   }
 
   getProfile() {

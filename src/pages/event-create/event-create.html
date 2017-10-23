@@ -64,7 +64,10 @@
     </ion-list>
 
     <div padding>
-      <button ion-button block (click)="onEventCreate(eventForm)">Enviar</button>
+      <button ion-button block (click)="onEventCreate(eventForm)" [disabled]="submitted">
+        <ion-spinner *ngIf="submitted" color="light"></ion-spinner> 
+        Enviar
+      </button>
     </div>
   </form>
 </ion-content>

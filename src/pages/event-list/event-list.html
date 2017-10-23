@@ -20,9 +20,11 @@
     </ion-card-content>
   </ion-card>
 
+  <!--
   <ion-searchbar (ionInput)="getItems($event)" *ngIf="eventsCount > 0" placeholder="Que tal uma busca rápida..."></ion-searchbar>
+  -->
   <ion-list class="event-list">
-    <button ion-item *ngFor="let event of eventList" (click)="goToEventPage(event)">
+    <button ion-item *ngFor="let event of events | async" (click)="goToEventPage(event)">
       <ion-thumbnail item-left>
         <img class="event-picture" [src]="event.picture">
       </ion-thumbnail>
@@ -33,7 +35,7 @@
   </ion-list>
 
   <ion-fab right bottom>
-    <button ion-fab (click)="pushToEventCreate()">
+    <button ion-fab (click)="goToEventCreate()">
       <ion-icon name="add"></ion-icon>
     </button>
   </ion-fab>

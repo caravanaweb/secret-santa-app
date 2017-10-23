@@ -1,28 +1,34 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class FirebaseProvider {
 
-  constructor(public afDB: AngularFireDatabase) { }
+  constructor(public afs: AngularFirestore) { }
 
   getObject(document) {
-    return this.afDB.object(document);
+    return this.afs.doc(document);
   }
 
   getList(document) {
-    return this.afDB.list(document);
+    return this.afs.collection(document);
   }
 
   addItem(document, item) {
-    this.afDB.list(document).push(item);
+    return this.afs.collection(document).add(item);
   }
 
   removeItem(document, key) {
-    this.afDB.list(document).remove(key);
+    return this.afs.collection(document).doc(key).delete();
+  }
+
+  updateItem(document, data) {
+    return this.afs.doc(document).update(data);
   }
 
   query(document, options) {
-    return this.afDB.list(document, options);
+    return this.afs.collection(document, options)
   }
 }

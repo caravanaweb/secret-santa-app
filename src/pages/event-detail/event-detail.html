@@ -1,16 +1,16 @@
 <ion-header>
   <ion-navbar color="primary">
-    <ion-title>{{ selectedEvent.title }}</ion-title>
-
-    <ion-buttons end *ngIf="currentUser">
-      <button ion-button icon-only (click)="pushToEventSettingsPage()" *ngIf="selectedEvent.ownership === currentUser.uid">
+    <ion-title>{{ (event | async)?.title }}</ion-title>
+    
+    <ion-buttons end *ngIf="currentUser && selectedEvent">
+      <button ion-button icon-only (click)="goToEventSettingsPage()" *ngIf="selectedEvent.ownership === currentUser.$key">
         <ion-icon name="settings"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="selectedEvent">
   <ion-card>
     <img class="event-picture" [src]="staticMapImage">
     <ion-item>
@@ -27,14 +27,16 @@
     </ion-item>
   </ion-card>
 
+  <!--
   <div padding *ngIf="!selectedEvent.isRaffleFinished &amp;&amp; selectedEvent.ownership === currentUser?.uid">
     <button ion-button block secondary (click)="raffleFriends()">Realizar o Sorteio</button>
   </div>
+  -->
 
   <ion-list>
     <ion-item-divider>
       {{selectedEvent.friends}} Participantes
-      <button ion-button icon-left clear item-right (click)="openAddParticipantModal()" *ngIf="currentUser &amp;&amp; selectedEvent.ownership === currentUser.uid &amp;&amp; !selectedEvent.isRaffleFinished">
+      <button ion-button icon-left clear item-right (click)="openAddParticipantModal()" *ngIf="currentUser && selectedEvent.ownership === currentUser.$key">
         <ion-icon name="person-add"></ion-icon>
         Adicionar
       </button>

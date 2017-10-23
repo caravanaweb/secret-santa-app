@@ -2,8 +2,8 @@ import { Component, ViewChild } from '@angular/core';
 import { Content, NavController, NavParams } from 'ionic-angular';
 import { User } from 'api/models/app-models';
 import { UserProvider } from '../../providers/user';
-import { FirebaseProvider } from '../../providers/firebase'
-import { FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
+import { FirebaseProvider } from '../../providers/firebase';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'page-profile',
@@ -14,8 +14,8 @@ export class ProfilePage {
   currentUser: User;
   recommendation: String;
   recommendationList: any[];
-  recommendations: FirebaseListObservable<any>;
-  userFireObject: FirebaseObjectObservable<User>;
+  recommendations: Observable<any[]>;
+  userFireObject: Observable<User>;
 
   constructor(
     public firebaseProvider: FirebaseProvider,
@@ -23,8 +23,8 @@ export class ProfilePage {
     public navParams: NavParams,
     public userProvider: UserProvider
   ) {
-    this.userFireObject = firebaseProvider.getObject(`/users/${navParams.get('userKey')}`);
-    this.recommendations = firebaseProvider.getList(`/recommendations/${navParams.get('userKey')}`);
+    this.userFireObject = firebaseProvider.getObject(`/users/${navParams.get('userKey')}`).valueChanges();
+    this.recommendations = firebaseProvider.getList(`/recommendations/${navParams.get('userKey')}`).valueChanges();
 
     this.recommendations.subscribe(snapshots => {
       let recommendations = [];
@@ -43,17 +43,17 @@ export class ProfilePage {
   }
 
   onAddRecommendation(inputFriendFeedback):void {
-    let userKey: String = this.currentUser.$key
+    // let userKey: String = this.currentUser.$key
 
-    if (inputFriendFeedback) {
-      this.recommendations.push({
-        'userKey': userKey,
-        'text': inputFriendFeedback.value
-      }).then(_ => {
-        this.recommendation = '';
-        this.scrollToBottom();
-      });
-    }
+    // if (inputFriendFeedback) {
+    //   this.recommendations.push({
+    //     'userKey': userKey,
+    //     'text': inputFriendFeedback.value
+    //   }).then(_ => {
+    //     this.recommendation = '';
+    //     this.scrollToBottom();
+    //   });
+    // }
   }
 
   scrollToBottom() {

@@ -1,20 +1,21 @@
 import { Component } from '@angular/core';
-import { Events, NavController, NavParams, ViewController } from 'ionic-angular';
-import { FirebaseProvider } from '../../providers/firebase'
-import { FirebaseListObservable } from 'angularfire2/database';
+import { Events, NavController, NavParams, ViewController, IonicPage } from 'ionic-angular';
+import { FirebaseProvider } from '../../providers/firebase';
+import { Observable } from 'rxjs/Observable';
 import { User } from 'api/models/app-models';
 
+@IonicPage()
 @Component({
   selector: 'page-add-participant-modal',
   templateUrl: 'add-participant-modal.html'
 })
 export class AddParticipantModalPage {
   isUserListVisible: boolean;
-  users: FirebaseListObservable<User[]>;
+  users: Observable<User[]>;
   usersCount: number;
   userList: User[];
   loadedUserList: User[];
-  eventAttendees: FirebaseListObservable<any>;
+  eventAttendees: Observable<User[]>;
 
   constructor(
     public events: Events,
@@ -22,70 +23,37 @@ export class AddParticipantModalPage {
     public navParams: NavParams,
     public viewCtrl: ViewController,
     public firebaseProvider: FirebaseProvider
-  ) {
-    this.isUserListVisible = false;
-    this.eventAttendees = firebaseProvider.getList(`/eventAttendees/${this.navParams.get('eventId')}`);
-    this.users = firebaseProvider.query('/users', {
-      query: {
-        orderByChild: 'name'
-      }
-    });
+  ) {}
 
-    this.users.subscribe(snapshots => {
-      let events = [];
-      snapshots.forEach(snapshot => {
-        events.push(snapshot);
-      });
-
-      this.loadedUserList = this.userList = events;
-      this.usersCount = events.length;
-    });
+  ngOnInit() {
+    this.eventAttendees = this.firebaseProvider.getList(`/events/${this.navParams.get('id')}/attendees`).valueChanges();
+    this.users = this.firebaseProvider.afs.collection('/users', ref => {
+      return ref.orderBy('name');
+    }).valueChanges();
   }
 
   addParticipant(user):void {
-    this.eventAttendees.update(user.$key, {
-      name: user.name,
-      gift: user.gift,
-      picture: user.picture
-    }).then(_ => {
-      this.isUserListVisible = false;
-    });
-  }
-
-  removeParticipant(user): void {
-    let message = `Você acaba de remover "${user.name}" do seu Amigo Secreto com sucesso.`;
-
-    this.eventAttendees.remove(user).then(_ => {
-      this.events.publish('message:show', message, 'success');
-    });
+    console.log(user, '@TODO: should add participants');
+    
+    // this.eventAttendees.update(user.$key, {
+    //   name: user.name,
+    //   gift: user.gift,
+    //   picture: user.picture
+    // }).then(_ => {
+    //   this.isUserListVisible = false;
+    // });
   }
 
   close() {
     this.viewCtrl.dismiss();
   }
 
-  getUsers(ev: any) {
-    this.initializeUsers();
-    let q = ev.target.value;
+  removeParticipant(user): void {
+    console.log(user, '@TODO: should remove participants');
+    // let message = `Você acaba de remover "${user.name}" do seu Amigo Secreto com sucesso.`;
 
-    if (!q) return;
-
-    this.userList = this.userList.filter((v) => {
-      if (v.name && q) {
-        if (v.name.toLowerCase().indexOf(q.toLowerCase()) > -1) {
-          return true;
-        }
-        return false;
-      }
-    });
+    // this.firebaseProvider.removeItem(`/events/${this.navParams.get('id')}/attendees`, user.$key).then(_ => {
+    //   this.events.publish('message:show', message, 'success');
+    // });
   }
-
-  initializeUsers(): void {
-    this.userList = this.loadedUserList;
-  }
-
-  userListDisplay(state): void {
-    this.isUserListVisible = state;
-  }
-
 }
